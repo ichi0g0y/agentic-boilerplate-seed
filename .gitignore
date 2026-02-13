@@ -1,0 +1,28 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Conductor / agent shared context
+.context/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Dependencies (言語選定後に適宜追加)
+node_modules/
+__pycache__/
+.venv/
+vendor/
+
+# Build output (言語選定後に適宜追加)
+dist/
+build/
+*.log
