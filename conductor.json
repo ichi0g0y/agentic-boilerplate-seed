@@ -1,0 +1,5 @@
+{
+  "scripts": {
+    "setup": "echo 'No project-specific setup. Select language and framework first.'"
+  }
+}
