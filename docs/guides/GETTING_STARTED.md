@@ -16,7 +16,9 @@
 
 - 要件整理
 - 画面・API・データのラフ設計
-- タスク分解（`docs/TODO.md`）
+- タスク分解（`issues/index.md` と `issues/open/`）
+- Issue単位でworktreeを分ける運用準備
+- 小さなPRを順次適用する前提で作業を分割
 
 ## 4. 技術選定後にやること
 

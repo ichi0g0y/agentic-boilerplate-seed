@@ -5,6 +5,8 @@
 - Codex / Claude の役割は固定しない
 - `.context/tasks` は使用しない
 - レビュー連携は `.context/_review_feedback.md` のみを使う
+- 計画・手順書・調査メモは `issues/` に集約し、`docs/` は確定情報を保持する
+- Issue単位でworktreeを作成し、小さなPRを順次適用して進める
 
 ## 基本フロー
 
@@ -31,7 +33,16 @@
 5. すべての修正・テストが完了したら `.context/_review_feedback.md` を削除する
 6. 結果を報告する
 
-## TODO管理
+## Issue管理
 
-- 将来実装項目は `docs/TODO.md` に記録する
-- コードコメントの TODO は TODO ID とセットで管理する
+- 将来実装項目は `issues/index.md` と `issues/open/` 配下のIssueで管理する
+- コードコメントの TODO は TODO ID とセットで管理し、対応するIssueに記載する
+- 状態遷移は `issues/open/` → `issues/in-progress/` → `issues/done/` の順で行う
+
+## Worktree + PR運用
+
+1. まず `issues/open/` にIssueを作成し、目的・手順・受け入れ条件を定義する
+2. `main` からIssue専用worktreeを作成して実装する
+3. レビュー時は必要に応じて別worktreeを作成し、差分確認と指摘整理を行う
+4. 1Issue 1PRを基本とし、PRは小さく分割して順次マージする
+5. マージ後は `issues/index.md` とIssueの状態を更新する

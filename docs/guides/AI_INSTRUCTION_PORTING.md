@@ -8,6 +8,10 @@
 - `CLAUDE.md`
 - `AI.md`
 - `.ai/*.md`
+- `issues/README.md`
+- `issues/index.md`
+- `issues/templates/issue.md`
+- `issues/open/` / `issues/in-progress/` / `issues/done/`
 
 ## 移植手順
 
@@ -17,9 +21,15 @@
 4. `.ai/project.md` をプロジェクト内容に合わせて更新する
 5. `.ai/rules.md` に言語・フレームワーク固有ルールを追加する
 6. `.ai/workflow.md` のコマンド例を実運用に合わせて更新する
+7. 既存のタスク管理資料（`docs/TODO.md` など）がある場合は、Issue運用に移行する
+8. 移植後に以下が満たされることを確認する
+   - 手順書・計画・レビュー観点が `issues/` に集約されている
+   - Issue単位でworktreeを作成する運用になっている
+   - 小さなPRを順次適用する方針が明文化されている
 
 ## 注意点
 
 - 既存プロダクト固有の制約はそのまま流用しない
 - ローカル絶対パスを含む設定は削除する
 - `/commit`・`/commit!` の運用ルールだけは全リポジトリで統一する
+- `docs/` は確定情報の保管先とし、揮発タスクを混在させない

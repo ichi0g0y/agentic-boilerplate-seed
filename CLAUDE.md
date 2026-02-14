@@ -9,6 +9,7 @@
 - 役割は固定しない
 - レビューで修正点がある場合は、必ず `.context/_review_feedback.md` を先に作成する
 - `/review-verify` は採用指摘のみ修正する
+- 手順書・計画・レビュー観点は `issues/` に集約し、Issue単位worktree + 小PRで進める
 
 ## 必読ドキュメント
 

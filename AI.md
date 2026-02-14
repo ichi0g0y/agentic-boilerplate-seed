@@ -14,10 +14,12 @@
 
 Conductorでの基本的な進め方は、次の順番です。
 
-1. コーディング依頼
-2. レビュー依頼
-3. `/review-verify` で指摘対応
-4. 必要なら `/commit` または `/commit!`
+1. `issues/` に計画・手順・受け入れ条件を記載
+2. Issue単位でworktreeを作成してコーディング依頼
+3. レビュー依頼（必要に応じて別worktreeで確認）
+4. `/review-verify` で指摘対応
+5. 小さなPRを順次適用
+6. 必要なら `/commit` または `/commit!`
 
 ### コマンド説明
 
