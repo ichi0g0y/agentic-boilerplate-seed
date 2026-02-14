@@ -28,6 +28,7 @@
    - `CLAUDE.md`
    - `AI.md`
    - `.ai/*.md`
+   - `BOOTSTRAP.md` と `docs/guides/AI_INSTRUCTION_PORTING.md` は参照専用とし、対象リポジトリへは原則配置しない
 2. 対象リポジトリに既存の AI 関連ドキュメント（`AGENTS.md` / `CLAUDE.md` / `AI.md` / `.ai/*.md`）がある場合は、上書きせず差分比較して統合する
    - 既存プロジェクト固有の制約は保持する
    - 本テンプレートの共通運用（レビュー連携、コミット運用など）は可能な限り採用する
@@ -42,10 +43,10 @@
    - `issues/index.md`
    - `issues/templates/issue.md`
    - `issues/open/` / `issues/in-progress/` / `issues/done/`
-6. 既存のタスク管理先（TODOドキュメント等）がある場合は、Issue運用への移行方針を明記する
-   - どの情報を `issues/` に移すか
-   - `docs/` には何を残すか
-   - 移行後の更新責任者
+6. 既存のタスク管理先（TODOドキュメント等）がある場合は、Issue運用へ移行する
+   - どの情報を `issues/` に移すかを明記する
+   - 移行後、旧タスク管理ドキュメントへの参照が残っていないことを確認する
+   - 移行完了した旧タスク管理ドキュメント（`docs/TODO.md` など）は削除する
 
 ## 初回依頼テンプレート（ユーザー用）
 
@@ -54,8 +55,9 @@
 ```text
 このリポジトリ準拠で作業してください。
 対象リポジトリ: https://github.com/ichi0g0y/agentic-boilerplate-seed.git
-まず BOOTSTRAP.md と AGENTS.md を読み、指定された必読ドキュメントを確認してください。
-追加の個別指示がなくても、BOOTSTRAP.md に記載の初期手順を実行してください。
+まず（このテンプレートの）BOOTSTRAP.md と、対象リポジトリの AGENTS.md を読み、
+指定された必読ドキュメントを確認してください。
+追加の個別指示がなくても、BOOTSTRAP.md に記載の初期手順を参照して実行してください。
 その後、以下を先に報告してください。
 1) 読み込んだルールファイル
 2) 今回の作業対象
@@ -64,8 +66,12 @@
 既存プロジェクトへの移植の場合は、
 docs/guides/AI_INSTRUCTION_PORTING.md の手順で不足ファイルを補い、
 .ai/project.md / .ai/rules.md / .ai/workflow.md をプロジェクト用に調整してください。
+このテンプレート側の BOOTSTRAP.md と docs/guides/AI_INSTRUCTION_PORTING.md は参照専用であり、
+対象リポジトリへは追加しないでください。
 また、手順書・計画・レビュー観点は `issues/` に集約し、
 Issueごとにworktreeを分けて小さなPRを順次適用する運用を導入してください。
 既存の AGENTS.md / CLAUDE.md / AI.md / .ai/*.md がある場合は上書きせず統合し、
 採用方針（採用 / 不採用 / 保留）を報告してください。
+`docs/TODO.md` など既存のタスク管理ドキュメントは `issues/` へ移行後、
+参照が残っていないことを確認して削除してください。
 ```
