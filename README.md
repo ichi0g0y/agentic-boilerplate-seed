@@ -7,6 +7,8 @@
 - 実装前にAI運用ルールを先に固定する
 - 技術スタック未決定でも使えるよう、言語依存ルールを持ち込まない
 - レビュー連携は `.context/_review_feedback.md` のみで管理する
+- 計画・手順・レビュー観点は `issues/` に集約し、`docs/` は確定情報のみを保持する
+- Issue単位でworktreeを分離し、小さなPRを順次適用する
 
 ## ディレクトリ構成
 
@@ -14,13 +16,14 @@
 - `.claude/commands/`: Claude用コマンド定義（commit / review-verify）
 - `BOOTSTRAP.md`: AIセッション開始時の初期手順
 - `docs/`: 最小限の運用ドキュメント
+- `issues/`: Issue管理（一覧・テンプレート・状態別ディレクトリ）
 - `.context/`: エージェント間の作業連携用（gitignore前提）
 
 ## 使い始める手順
 
 1. `docs/guides/GETTING_STARTED.md` を読む
 2. `.ai/project.md` に今回の目的と制約を書く
-3. 言語選定までは、設計・要件・タスク分解を中心に進める
+3. 言語選定までは、設計・要件・タスク分解（`issues/`）を中心に進める
 4. 言語選定後に、必要な開発/テストコマンドを `docs/` と `.ai/` に追加する
 
 ## BOOTSTRAP.md の使い方
