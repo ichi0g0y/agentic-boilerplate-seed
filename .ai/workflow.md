@@ -23,6 +23,9 @@
 3. その後レビュー結果を報告する
 4. 修正点がない場合は `.context/_review_feedback.md` を作成しない
 5. 報告時に `.context/_review_feedback.md` の出力有無を明記する
+6. レビュー依頼時はIssue状態を `Review Waiting` に更新する
+7. 修正点がある場合は、対応着手時に `In Progress` へ戻す
+8. レビュー時点ではIssue状態を `Done` へは遷移させない
 
 ### 3. `/review-verify`
 
@@ -37,12 +40,15 @@
 
 - 将来実装項目は `issues/index.md` と `issues/open/` 配下のIssueで管理する
 - コードコメントの TODO は TODO ID とセットで管理し、対応するIssueに記載する
-- 状態遷移は `issues/open/` → `issues/in-progress/` → `issues/done/` の順で行う
+- 状態遷移は `issues/open/` → `issues/in-progress/` → `issues/review-waiting/` を基本とし、指摘対応時は `issues/in-progress/` に戻す
+- `Done` への遷移は、レビュー指摘の採用分対応完了とPRマージ完了後に行う
+- `issues/done/` は完了Issueのアーカイブとして扱う
 
 ## Worktree + PR運用
 
 1. まず `issues/open/` にIssueを作成し、目的・手順・受け入れ条件を定義する
 2. `main` からIssue専用worktreeを作成して実装する
-3. レビュー時は必要に応じて別worktreeを作成し、差分確認と指摘整理を行う
+3. レビュー依頼時はIssueを `issues/review-waiting/` に移動し、必要に応じて別worktreeで差分確認と指摘整理を行う
 4. 1Issue 1PRを基本とし、PRは小さく分割して順次マージする
-5. マージ後は `issues/index.md` とIssueの状態を更新する
+5. レビューで修正が必要な場合はIssueを `issues/in-progress/` に戻して対応し、未解決指摘をなくしたら再度 `issues/review-waiting/` でレビューする
+6. PRマージ後に `issues/index.md` とIssue状態を `Done` へ更新し、`issues/done/` へアーカイブする（不要なら削除してもよい）

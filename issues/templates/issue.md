@@ -1,6 +1,6 @@
-# ISSUE-xxxx タイトル
+# <issue-id> タイトル
 
-- 状態: Open / In Progress / Done
+- 状態: Open / In Progress / Review Waiting / Done
 - 優先度: 高 / 中 / 低
 - 担当: 未定
 - 期限: 未定
@@ -21,6 +21,9 @@
 
 1. 進め方を時系列で簡潔に記載する
 2. worktree作成やレビュー手順があれば明記する
+3. レビュー依頼時に状態を `Review Waiting` へ更新する
+4. レビュー指摘の採用分対応に着手する際は `In Progress` へ戻す
+5. レビュー完了後、PRマージ後に `Done` へ更新する
 
 ## スコープ
 

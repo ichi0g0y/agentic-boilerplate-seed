@@ -9,12 +9,13 @@
 - `issues/templates/issue.md`: Issue記入テンプレート
 - `issues/open/`: 未着手Issue
 - `issues/in-progress/`: 進行中Issue
-- `issues/done/`: 完了Issue
+- `issues/review-waiting/`: レビュー待ちIssue
+- `issues/done/`: 完了Issue（アーカイブ）
 
 ## 命名規則
 
-- Issue ID: `ISSUE-0001` 形式（4桁連番）
-- Issueディレクトリ名: `ISSUE-0001-short-kebab-case`
+- Issue ID: `api-error-handling` のようなkebab-case（連番なし）
+- Issueディレクトリ名: Issue IDと同一（例: `api-error-handling`）
 - Issue本文: 各Issueディレクトリの `README.md`
 - コード内TODO ID: `abc123` 形式（6文字英数字）
 
@@ -22,16 +23,19 @@
 
 1. 作成時は `issues/open/` に配置する
 2. 着手したら `issues/in-progress/` に移動する
-3. 完了したら `issues/done/` に移動する
-4. 移動時は必ず `issues/index.md` のリンクを更新する
+3. レビュー依頼時は `issues/review-waiting/` に移動する
+4. レビュー指摘の採用分対応に着手する場合は `issues/in-progress/` に戻す
+5. レビュー指摘の採用分を反映し、PRマージまで完了したら `issues/done/` に移動する
+6. 記録が不要なIssueは、`issues/done/` に残さず削除してもよい
+7. 移動または削除時は必ず `issues/index.md` のリンクを更新する
 
 ## 新規Issue作成手順
 
-1. `issues/index.md` を見て次のIssue IDを採番する
-2. `issues/open/ISSUE-xxxx-<slug>/` を作成する
+1. 目的が分かるIssue ID（kebab-case）を決める
+2. `issues/open/<issue-id>/` を作成する
 3. `issues/templates/issue.md` を `README.md` としてコピーする
 4. 必須項目を埋める
-5. `issues/index.md` の `Open` に1行追加する
+5. `issues/index.md` の `Open` に1行追加する（優先順は`優先度`列で管理する）
 
 ## Issue本文の必須項目
 
@@ -56,7 +60,7 @@
 
 ## 完了時ルール
 
-1. 受け入れ条件を満たしたことを確認する
-2. `issues/done/` へディレクトリ移動する
-3. `issues/index.md` の状態を更新する
+1. 受け入れ条件を満たし、レビュー指摘の採用分対応とPRマージが完了していることを確認する
+2. `issues/done/` へディレクトリ移動してアーカイブする（不要ならIssueディレクトリを削除してもよい）
+3. `issues/index.md` の状態を更新し、削除する場合は該当行も削除する
 4. 不要なコードTODOコメントを削除する
