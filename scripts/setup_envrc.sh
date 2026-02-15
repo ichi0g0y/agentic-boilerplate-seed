@@ -20,12 +20,8 @@ if [ -d "$SOURCE_DIR" ]; then
 
   # env/ ディレクトリのコピー
   if [ -d "$SOURCE_DIR/env" ]; then
-    if ! command -v rsync >/dev/null 2>&1; then
-      echo "error: rsync is required to sync $SOURCE_DIR/env" >&2
-      exit 1
-    fi
-    rsync -a "$SOURCE_DIR/env/" "$PROJECT_ROOT/env/"
-    echo "Synced: env/"
+    cp -a "$SOURCE_DIR/env/." "$PROJECT_ROOT/env/"
+    echo "Copied: env/"
   fi
 else
   echo "Skipped: $SOURCE_DIR not found"
