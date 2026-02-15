@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! command -v gh >/dev/null 2>&1; then
+  echo "error: gh is not installed" >&2
+  exit 127
+fi
+
+if command -v direnv >/dev/null 2>&1; then
+  project_root="$(git rev-parse --show-toplevel 2>/dev/null || pwd)"
+  exec direnv exec "$project_root" gh "$@" 2> >(
+    while IFS= read -r line; do
+      case "$line" in
+        *"direnv: loading "*) ;;
+        *) printf '%s\n' "$line" >&2 ;;
+      esac
+    done
+  )
+fi
+
+echo "warning: direnv is not installed; running gh without direnv" >&2
+exec gh "$@"
