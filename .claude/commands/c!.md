@@ -10,18 +10,9 @@ type: "command"
 
 - `/c!` は `/commit!` の短縮コマンド。
 - 挙動・判断基準は `.claude/commands/commit!.md` に準拠する。
+- まず `.claude/commands/commit!.md` を読み込み、記載の手順を省略せずそのまま実行する。
 
-## 重要な前提事項
+## 実行ルール
 
-- はじめに `git add -A` で変更をステージングする
-- ステージング済みの差分のみを根拠にコミットメッセージを提案する
-- ユーザー確認なしで最初の候補メッセージを採用してコミットする
-- コミットに Claude 共著フッターを追加しない
-
-## 実行手順
-
-1. `git add -A` を実行する
-2. `git diff --cached --name-only` でステージング対象を確認する
-3. `git diff --cached` で変更内容を把握する
-4. コミットメッセージ候補を提示する
-5. 最初の候補で `git commit -m "..."` を実行する
+- 詳細手順・前提・メッセージ規約は `.claude/commands/commit!.md` を唯一の正本とする。
+- 記載内容が衝突する場合は `.claude/commands/commit!.md` を優先する。
