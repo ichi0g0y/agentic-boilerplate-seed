@@ -18,8 +18,11 @@
 - 進行状態は `status:in-progress` ラベルとIssueクローズで管理する
 - GitHub操作は `gh` 固定にせず、必要に応じてAPI実行を選択してよい
 - `gh` を使う場合は `scripts/ghx ...` を基本とし、PR操作とレビューコメント記録にも同ルールを適用する
+- 既存の未コミット変更があっても、Issue化（Issue作成/番号確定）を止めない
 - `.context/issue_scope.json` を使う場合、未設定時は通常動作で進める
 - `.context/issue_scope.json` を再設定する場合は上書き前にユーザー確認を行う
+- 複数Issueに関係する作業は `primary_issue` と `related_issues` を使って `issue_scope` に記録する
+- PR作成/更新後は `issue_scope` を使う運用であれば `pr_number`（必要に応じて `pr_url`）を記録する
 - 実装とレビューはIssue単位でworktreeを分けて進める
 
 ## 品質ルール

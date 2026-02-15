@@ -24,9 +24,11 @@ Conductorでの基本的な進め方は、次の順番です。
 ### コマンド説明
 
 - コーディング依頼: 明示コマンドは不要です。通常の依頼文で実装を指示します。
+- `/plan` または `/pl`: `AI.md` と `.ai/*`（+ `.context/issue_scope.json` があればそれも）を読み込み、計画準備状態に入ります。実装・Issue作成・マージは行いません。
 - `/pick <primary-issue> [related-issues...]` または `/p <primary-issue> [related-issues...]`: 対象Issueを `.context/issue_scope.json` に固定します（任意）。
 - レビュー依頼: 明示コマンドは不要です。差分レビューを依頼します。
 - `/review-verify <issue-number>` または `/rv <issue-number>`: 対象Issueのレビューコメントを読み込み、採用された指摘のみ修正します。Issue連携した場合は修正結果コメントをIssueへ追記します。引数なし時は `.context/issue_scope.json` を参照します。
+- `/merge [pr-number]` または `/m [pr-number]`: 対象PRを安全確認のうえ `scripts/ghx pr merge` でマージします。Issue連携中は結果をIssueコメントに記録します。引数省略時は `.context/issue_scope.json` の `pr_number` も解決候補として参照します。
 - `/commit` または `/c`: 確認付きコミットです。候補メッセージ確認後にコミットします。
 - `/commit!` または `/c!`: 確認なしで即時コミットします。
 
@@ -35,8 +37,10 @@ Conductorでの基本的な進め方は、次の順番です。
 - 上記のスラッシュコマンドは Claude Code 前提です。
 - Codex では疑似コマンド運用になるため、`/p` などの文字列だけではなく処理内容を依頼文で明示してください。
 - Codexへの指示例:
+  - `AI.md と .ai の必読を読み込み、計画準備状態へ入って（/plan 相当）`
   - `Issue #7 を primary_issue として .context/issue_scope.json を更新して（/pick 相当）`
   - `Issue #7 のレビューコメントを検証し、採用指摘のみ修正してIssueへ結果コメントして（/rv 相当）`
+  - `PR #123 を安全確認して scripts/ghx でマージし、Issueへ結果コメントして（/merge 相当）`
   - `git add -A 後に確認付きコミット候補を出して（/commit 相当）`
 
 ### レビュー連携の要点
@@ -62,9 +66,9 @@ Conductorで依頼する際は、依頼文に次の追加条件を含めてく�
 ```text
 - レビュー運用の正は `.ai/review.md` と `.ai/workflow.md` を参照し、重複する指示がある場合はそちらを優先してください。
 - 対象Issue番号（例: `#9`）を明記してください。省略する場合は `.context/issue_scope.json` を先に設定してください。
+- **レビュー開始前に**、対象Issueの既存コメント（特に `/rv` / `/review-verify` 実行結果）を `scripts/ghx issue view <number> --comments` で必ず確認してください。
 - レビュー結果の報告は必ず日本語で記述してください。
 - レビュー結果は対象Issueコメントに記載してください。
-- 最新の修正結果コメント（`/rv` / `/review-verify` 実行結果）も確認してください。
 - GitHub CLI でレビュー結果をIssueへ記録する場合は `scripts/ghx issue comment ...` を使ってください。
 - `/review-verify` 相当の実行時は、指摘ごとに `採用 / 不採用 / 追加情報必要` を明記してください。
 - 修正を行った場合は、実施したテスト内容と結果を最終報告に必ず記載してください。
@@ -87,6 +91,7 @@ Conductorで依頼する際は、依頼文に次の追加条件を含めてく�
 - 完了Issueは必ず `Closes #<issue-number>` を記載してください。
 - 参照のみのIssueは `Refs #<issue-number>` を記載してください。
 - GitHub CLI でPRを作成/更新する場合は `scripts/ghx pr ...` を使ってください。
+- PR作成/更新後は `.context/issue_scope.json` の `pr_number`（必要に応じて `pr_url`）を更新し、`/merge` で参照できるようにしてください。
 - 実行した確認コマンド（例: task check:all, task gen:api, task gen:db）と結果を本文に明記してください。
 - 未実施の検証がある場合は「未実施項目」と理由を明記してください。
 - 最終報告には、作成/更新したPRのURL（`pr_url`）を必ず記載してください。
