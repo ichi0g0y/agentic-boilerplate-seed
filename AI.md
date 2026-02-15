@@ -14,25 +14,43 @@
 
 Conductorでの基本的な進め方は、次の順番です。
 
-1. `issues/` に計画・手順・受け入れ条件を記載
-2. Issue単位でworktreeを作成してコーディング依頼
-3. レビュー依頼（必要に応じて別worktreeで確認）
-4. `/review-verify` で指摘対応
+1. GitHub Issue に計画・手順・受け入れ条件・進行状況を記載
+2. Issue単位でworktreeを作成し、必要なら `/pick` または `/p` で対象Issueを `.context` に固定
+3. レビュー依頼（対象Issue番号を明記し、レビュー結果はIssueコメントに記載）
+4. `/review-verify <issue-number>` または `/rv <issue-number>` で指摘対応し、修正結果をIssueコメントに記載（引数なし時は `.context` を参照）
 5. 小さなPRを順次適用
-6. 必要なら `/commit` または `/commit!`
+6. 必要なら `/commit` / `/c` または `/commit!` / `/c!`
 
 ### コマンド説明
 
 - コーディング依頼: 明示コマンドは不要です。通常の依頼文で実装を指示します。
+- `/pick <primary-issue> [related-issues...]` または `/p <primary-issue> [related-issues...]`: 対象Issueを `.context/issue_scope.json` に固定します（任意）。
 - レビュー依頼: 明示コマンドは不要です。差分レビューを依頼します。
-- `/review-verify`: `.context/_review_feedback.md` を読み込み、採用された指摘のみ修正します。
-- `/commit`: 確認付きコミットです。候補メッセージ確認後にコミットします。
-- `/commit!`: 確認なしで即時コミットします。
+- `/review-verify <issue-number>` または `/rv <issue-number>`: 対象Issueのレビューコメントを読み込み、採用された指摘のみ修正します。Issue連携した場合は修正結果コメントをIssueへ追記します。引数なし時は `.context/issue_scope.json` を参照します。
+- `/commit` または `/c`: 確認付きコミットです。候補メッセージ確認後にコミットします。
+- `/commit!` または `/c!`: 確認なしで即時コミットします。
+
+注記:
+
+- 上記のスラッシュコマンドは Claude Code 前提です。
+- Codex では疑似コマンド運用になるため、`/p` などの文字列だけではなく処理内容を依頼文で明示してください。
+- Codexへの指示例:
+  - `Issue #7 を primary_issue として .context/issue_scope.json を更新して（/pick 相当）`
+  - `Issue #7 のレビューコメントを検証し、採用指摘のみ修正してIssueへ結果コメントして（/rv 相当）`
+  - `git add -A 後に確認付きコミット候補を出して（/commit 相当）`
 
 ### レビュー連携の要点
 
-- レビューで修正点がある場合は、レビュー担当が先に `.context/_review_feedback.md` を作成します。
+- レビューで修正点がある場合は、レビュー担当が対象Issueへレビューコメントを追加します。
 - レビュー結果の報告は日本語で記述します。
+- CodexはSlash Commandを使えないため、同等処理はプロンプトで明示指示します。
+
+### Issue番号の受け渡し
+
+- `Issue #9` のように依頼文で明示する方法を基本とします。
+- 必要なら `/pick` または `/p` で `.context/issue_scope.json` に固定して共有します。
+- `.context` 未設定時は通常動作で進め、Issue固定フローは使いません。
+- `.context` と引数の両方がある場合は、引数を優先して扱います。
 
 ## Conductor利用時の追加プロンプト
 
@@ -43,8 +61,10 @@ Conductorで依頼する際は、依頼文に次の追加条件を含めてく�
 
 ```text
 - レビュー運用の正は `.ai/review.md` と `.ai/workflow.md` を参照し、重複する指示がある場合はそちらを優先してください。
+- 対象Issue番号（例: `#9`）を明記してください。省略する場合は `.context/issue_scope.json` を先に設定してください。
 - レビュー結果の報告は必ず日本語で記述してください。
-- `.context/_review_feedback.md` の出力有無を必ず報告してください。
+- レビュー結果は対象Issueコメントに記載してください。
+- 最新の修正結果コメント（`/rv` / `/review-verify` 実行結果）も確認してください。
 ```
 
 ### PR作成依頼時
@@ -52,13 +72,15 @@ Conductorで依頼する際は、依頼文に次の追加条件を含めてく�
 ```text
 - PR作成・コミット運用で重複するルールは `.ai/git.md` と `.ai/workflow.md` を参照し、そちらを優先してください。
 - PR作成に関する報告・提案・本文はすべて日本語で記述してください。
-- PRのbaseブランチは `main` にしてください。
+- PRのbaseブランチはリポジトリ標準の基底ブランチにしてください。
 - PR本文は日本語で、以下の見出しを含めてください:
   - 概要
   - 変更内容
   - テスト手順
   - 影響範囲
   - チェックリスト
+- 完了Issueは必ず `Closes #<issue-number>` を記載してください。
+- 参照のみのIssueは `Refs #<issue-number>` を記載してください。
 - 実行した確認コマンド（例: task check:all, task gen:api, task gen:db）と結果を本文に明記してください。
 - 未実施の検証がある場合は「未実施項目」と理由を明記してください。
 ```
