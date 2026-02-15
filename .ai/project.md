@@ -9,14 +9,15 @@
 - 技術スタック: 未選定
 - 実装対象: 未確定（要件定義中）
 - 運用方針: AI協調フローを先に固定
-- タスク運用: `issues/` 集約（Issue単位worktree + 小PR）
+- タスク運用: GitHub Issues 集約（Issue単位worktree + 小PR）
+- 状態管理: `status:in-progress` ラベル + Issueクローズ
+- Issueスコープ共有: 必要に応じて `.context/issue_scope.json` を利用
 
 ## ディレクトリ構成
 
 - `.ai/`: AI共通ルール
 - `.claude/`: Claude用コマンド
 - `docs/`: プロジェクト文書
-- `issues/`: 揮発タスクのIssue管理
 - `.context/`: エージェント間の共有作業領域
 
 ## 今後追加すべき項目

@@ -1,15 +1,15 @@
 # ドキュメント
 
 このディレクトリは、言語未選定フェーズでも使える最小ドキュメントのみを保持します。
-揮発的な計画・手順・進捗は `issues/` で管理します。
+揮発的な計画・手順・進捗は GitHub Issues で管理します。
 
 ## 構成
 
 - `docs/guides/GETTING_STARTED.md`: 初期セットアップ手順
 - `docs/guides/AI_INSTRUCTION_PORTING.md`: AI運用ルール移植ガイド
+- `docs/guides/ISSUE_WORKFLOW.md`: Issue運用ルール
 - `docs/guides/CODING_STANDARDS.md`: コーディング規約（コミットメッセージ含む）
-- `../issues/README.md`: Issue運用ルール
-- `../issues/index.md`: Issue一覧
+- `../.ai/workflow.md`: AI協調ワークフロー
 
 ## 運用方針
 

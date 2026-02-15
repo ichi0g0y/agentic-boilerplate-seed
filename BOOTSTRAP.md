@@ -38,13 +38,12 @@
    - `.ai/rules.md`
    - `.ai/workflow.md`
 4. 既存ルールとの衝突点を洗い出し、採用方針を明記する
-5. Issue運用を導入する
-   - `issues/README.md`
-   - `issues/index.md`
-   - `issues/templates/issue.md`
-   - `issues/open/` / `issues/in-progress/` / `issues/done/`
-6. 既存のタスク管理先（TODOドキュメント等）がある場合は、Issue運用へ移行する
-   - どの情報を `issues/` に移すかを明記する
+5. GitHub Issue運用を導入する
+   - `docs/guides/ISSUE_WORKFLOW.md` の手順に従う
+   - `.ai/workflow.md` の「Issue状態とラベル」「基本フロー」を対象プロジェクト向けに調整する
+   - 必要に応じて `.context/issue_scope.json` を使ったIssueスコープ共有ルールを整備する
+6. 既存のタスク管理先（TODOドキュメント等）がある場合は、GitHub Issues 運用へ移行する
+   - どの情報を GitHub Issues に移すかを明記する
    - 移行後、旧タスク管理ドキュメントへの参照が残っていないことを確認する
    - 移行完了した旧タスク管理ドキュメント（`docs/TODO.md` など）は削除する
 
@@ -68,10 +67,10 @@ docs/guides/AI_INSTRUCTION_PORTING.md の手順で不足ファイルを補い、
 .ai/project.md / .ai/rules.md / .ai/workflow.md をプロジェクト用に調整してください。
 このテンプレート側の BOOTSTRAP.md と docs/guides/AI_INSTRUCTION_PORTING.md は参照専用であり、
 対象リポジトリへは追加しないでください。
-また、手順書・計画・レビュー観点は `issues/` に集約し、
+また、手順書・計画・レビュー観点は GitHub Issues に集約し、
 Issueごとにworktreeを分けて小さなPRを順次適用する運用を導入してください。
 既存の AGENTS.md / CLAUDE.md / AI.md / .ai/*.md がある場合は上書きせず統合し、
 採用方針（採用 / 不採用 / 保留）を報告してください。
-`docs/TODO.md` など既存のタスク管理ドキュメントは `issues/` へ移行後、
+`docs/TODO.md` など既存のタスク管理ドキュメントは GitHub Issues へ移行後、
 参照が残っていないことを確認して削除してください。
 ```
