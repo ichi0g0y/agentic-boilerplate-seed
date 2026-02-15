@@ -7,6 +7,7 @@
 - レビュー結果は日本語で報告する
 - レビュー結果は対象 GitHub Issue のコメントに記録する
 - レビュー連携の手順は `.ai/workflow.md` を参照する
+- `gh` を使ってレビュー結果を Issue に記録する場合は `scripts/ghx issue comment ...` を使う
 
 ## 観点（優先順）
 

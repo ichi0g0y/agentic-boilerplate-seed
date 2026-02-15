@@ -39,3 +39,4 @@
 - 完了したIssueは PR本文に `Closes #<issue-number>` を記載し、マージ時に自動クローズする
 - 参照だけのIssueは `Refs #<issue-number>` を使う
 - 複数Issueを同一PRで完了させる場合は、複数の `Closes #...` を記載してよい
+- `gh` で PR を作成/更新する場合は `scripts/ghx pr ...` を使う

@@ -16,6 +16,8 @@
 - 手順書・実装計画・調査メモは原則 GitHub Issues に記録し、`docs/` には確定事項のみを残す
 - レビュー結果は GitHub Issue コメントに記録する
 - 進行状態は `status:in-progress` ラベルとIssueクローズで管理する
+- GitHub操作は `gh` 固定にせず、必要に応じてAPI実行を選択してよい
+- `gh` を使う場合は `scripts/ghx ...` を基本とし、PR操作とレビューコメント記録にも同ルールを適用する
 - `.context/issue_scope.json` を使う場合、未設定時は通常動作で進める
 - `.context/issue_scope.json` を再設定する場合は上書き前にユーザー確認を行う
 - 実装とレビューはIssue単位でworktreeを分けて進める

@@ -41,8 +41,18 @@ Claude Code の組み込みエージェント、またはユーザーディレ�
 - 実装: 指示に沿って実装し、必要な検証結果を報告
 - `/pick` or `/p`: 必要時のみ対象Issueスコープを `.context` に固定
 - レビュー: 問題がある場合は対象Issueへレビューコメントを記録
+- `gh` を使う場合: `scripts/ghx ...` を使う（PR操作・レビューコメント記録に適用）
 - `/review-verify` or `/rv`: 指摘を検証し、採用したものだけ修正（Codexはプロンプトで同等指示）
 - `/commit` or `/c`: 確認付きコミット
 - `/commit!` or `/c!`: 即時コミット
+
+## gh と direnv の使い方
+
+- `gh` 実行は `scripts/ghx ...` を推奨する
+- `scripts/ghx` は内部で、`direnv` が使える場合にプロジェクトルートで `direnv exec` を実行する
+- `direnv` 未インストール時は警告を表示し、`gh` にフォールバックする
+- 実行例: `scripts/ghx issue list`
+- 実行例: `scripts/ghx pr status`
+- 実行例: `scripts/ghx issue comment 9 --body "..."`
 
 詳細は `.ai/workflow.md` と `docs/guides/ISSUE_WORKFLOW.md` を参照してください。
