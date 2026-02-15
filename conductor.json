@@ -1,5 +1,5 @@
 {
   "scripts": {
-    "setup": "echo 'No project-specific setup. Select language and framework first.'"
+    "setup": "bash ./scripts/setup_envrc.sh"
   }
 }

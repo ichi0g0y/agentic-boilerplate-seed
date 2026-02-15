@@ -11,6 +11,7 @@
 - `.ai/rules.md`
 - `.ai/workflow.md`
 - `.ai/review.md`
+- `.ai/dev-env.md`
 
 ## 3. 技術選定前にやること
 
