@@ -10,6 +10,7 @@
 - 状態管理は GitHub Issue のラベル + Close で運用する
 - 1 Issue 1 worktree を基本とし、強く関連するIssueのみ同一worktreeで扱う
 - PR は小さく分割して順次マージする
+- 既存の未コミット変更があっても、Issue作成とIssue番号の確定は通常どおり進める
 
 ## Issue状態とラベル
 
@@ -35,7 +36,8 @@
 - 計画相談・壁打ちなど、ファイル変更を伴わない場合はIssueスコープ未設定でもよい
 - `.context/issue_scope.json` が未設定でも、依頼文でIssue番号が明示されていれば進行してよい
 - 再 `/pick` / `/p` で既存スコープがある場合は、上書き前に警告してユーザー確認を行う
-- 軽微な修正をまとめる場合は、`primary_issue` + `related_issues` で複数Issueを保持してよい
+- 複数Issueに関係する作業では、`primary_issue` + `related_issues` で複数Issueを保持することを基本とする
+- PR作成/更新後は、必要に応じて `.context/issue_scope.json` に `pr_number`（必要なら `pr_url`）を記録し、`/merge` の解決候補として使える状態にする
 - 共有ライブラリ変更で複数Issueに影響する場合は、各Issueコメントに関連Issueを相互記載する
 
 想定フォーマット:
@@ -45,6 +47,8 @@
   "primary_issue": 9,
   "related_issues": [12, 15],
   "branch": "feature/example",
+  "pr_number": 34,
+  "pr_url": "https://github.com/example/repo/pull/34",
   "picked_at": "2026-02-15T10:30:00Z"
 }
 ```
@@ -54,7 +58,7 @@
 ### 0. 修正依頼の受付ゲート
 
 1. ファイル変更を伴う依頼を受けたら、着手前にIssue化可否をユーザーへ確認する
-2. Issue化がOKならIssueを作成し、Issue番号を確定する
+2. Issue化がOKならIssueを作成し、Issue番号を確定する（既存の未コミット変更があっても止めない）
 3. Issue化しない場合は、Issue未作成で進める合意を明示してから進める
 
 ### 1. 計画
@@ -66,7 +70,7 @@
 ### 2. スコープ固定（任意）
 
 1. 必要なら `/pick` または `/p` で対象Issueを固定する
-2. 固定時は `primary_issue` と `related_issues` を明示する
+2. 固定時は `primary_issue` と `related_issues` を明示し、複数Issueがある場合は `related_issues` に必ず記録する
 3. `.context/issue_scope.json` が未設定でも、Issue番号を依頼文で明示して進めてよい
 4. Issue化して進める場合に `.context` と依頼文のどちらにもIssue番号がないときは、Issue起票または番号指定を確認する
 
@@ -103,11 +107,14 @@
 ### 6. Codex疑似コマンド運用
 
 - Codexでは `/pick` `/p` `/review-verify` `/rv` `/commit` `/c` `/commit!` `/c!` をコマンドとして直接実行できない
-- 短縮形（`/p` `/rv` `/c` `/c!`）はClaude Code向けの別名であり、Codexではそのまま送らない
+- Codexでは `/plan` `/pl` `/merge` `/m` もコマンドとして直接実行できない
+- 短縮形（`/pl` `/p` `/rv` `/m` `/c` `/c!`）はClaude Code向けの別名であり、Codexではそのまま送らない
 - Codexへは「`/pick` 相当を実施」「`/rv` 相当を実施」のように、処理内容を文章で明示する
 - 例:
+  - `AI.md と .ai の必読を読み込み、計画準備状態へ入って（/plan 相当）`
   - `Issue #7 を primary_issue として .context/issue_scope.json を更新して（/pick 相当）`
   - `Issue #7 のレビューコメントを検証し、採用指摘のみ修正してIssueへ結果コメントして（/rv 相当）`
+  - `PR #14 を安全確認して scripts/ghx でマージし、Issueへ結果コメントして（/merge 相当）`
   - `git add -A 後に確認付きでコミット候補を提示して（/commit 相当）`
   - `git add -A 後に最初の候補で即コミットして（/commit! 相当）`
 

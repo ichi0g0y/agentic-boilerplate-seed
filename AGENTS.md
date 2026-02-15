@@ -29,4 +29,4 @@
 
 - 詳細は [`.ai/dev-env.md`](.ai/dev-env.md) を正本として参照する
 - CodexはSlash Command機能がないため、`/review-verify` 相当はプロンプトで明示指示する
-- `/pick` `/p` `/review-verify` `/rv` `/commit` `/c` `/commit!` `/c!` は疑似コマンドとして扱い、処理内容を依頼文で明示する
+- `/plan` `/pl` `/pick` `/p` `/review-verify` `/rv` `/merge` `/m` `/commit` `/c` `/commit!` `/c!` は疑似コマンドとして扱い、処理内容を依頼文で明示する
