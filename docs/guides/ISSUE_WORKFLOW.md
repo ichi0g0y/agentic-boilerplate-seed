@@ -9,7 +9,7 @@
 - 状態管理は GitHub Issue のラベル + Close で行う
 - 1 Issue 1 worktree を基本とし、強く関連するIssueのみ同一worktreeで扱う
 - PRは小さく分割して順次マージする
-- PRのbaseはリポジトリ標準の基底ブランチを使う（`main` 固定にしない）
+- PRのbaseは `develop` を使う（GitHubのデフォルトブランチ設定は変更しない）
 - GitHub操作手段は固定しない（`gh` / REST API / GraphQL API のいずれでもよい）
 - `gh` を使う場合は `scripts/ghx ...` を基本とする
 - 認証切り替えが多い環境では、`gh auth` 依存を避けてAPI実行を優先してよい
@@ -73,7 +73,7 @@
 1. ファイル変更を伴う依頼を受けたら、着手前にIssue化可否をユーザーへ確認する
 2. Issue化がOKならIssueを起票する
 3. Issue化する場合は、目的・手順・受け入れ条件・チェックリストと優先度ラベル（`priority:*`）を設定する
-4. ConductorでIssue用workspace（worktree）を作成する（基底はリポジトリ標準の基底ブランチ）
+4. ConductorでIssue用workspace（worktree）を作成する（基底は `develop`）
 5. Issue化して進める場合は、対象Issue番号が `.context` または依頼文で確定していることを確認する
 6. 必要なら `/pick` または `/p` で対象Issueを固定する
 7. Issue化している場合は、着手時に `status:in-progress` を付与する
