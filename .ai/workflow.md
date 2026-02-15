@@ -3,69 +3,101 @@
 ## AI協調フロー
 
 - Codex / Claude の役割は固定しない
-- `.context/tasks` は使用しない
-- レビュー連携は `.context/_review_feedback.md` のみを使う
-- 計画・手順書・調査メモは `issues/` に集約し、`docs/` は確定情報を保持する
-- Issue単位でworktreeを作成し、小さなPRを順次適用して進める
+- 修正内容・進行状況・手順書・計画・レビュー観点は GitHub Issues に集約する
+- 状態管理は GitHub Issue のラベル + Close で運用する
+- 1 Issue 1 worktree を基本とし、強く関連するIssueのみ同一worktreeで扱う
+- PR は小さく分割して順次マージする
+
+## Issue状態とラベル
+
+- `Open`: 未着手/待機中（ラベルなし）
+- `In Progress`: `status:in-progress` ラベルを付与
+- `Close`: 完了。PRマージ後にIssueをクローズする
+- 優先度は `priority:P0` / `priority:P1` / `priority:P2` / `priority:P3` で管理する
+
+優先度の目安:
+
+1. `P0`: サービス停止・致命的不具合・最優先対応
+2. `P1`: 重要機能の実装/修正で早期対応が必要
+3. `P2`: 通常優先度
+4. `P3`: 低優先度・後続対応可
+
+## Issueスコープ管理（任意）
+
+- `.context/issue_scope.json` を使って対象Issueを共有してよい
+- `/pick` / `/p` は任意。計画段階では未設定でもよい
+- `.context/issue_scope.json` が未設定の場合は、Issue固定フローを使わず通常動作で進める
+- 再 `/pick` / `/p` で既存スコープがある場合は、上書き前に警告してユーザー確認を行う
+- 軽微な修正をまとめる場合は、`primary_issue` + `related_issues` で複数Issueを保持してよい
+- 共有ライブラリ変更で複数Issueに影響する場合は、各Issueコメントに関連Issueを相互記載する
+
+想定フォーマット:
+
+```json
+{
+  "primary_issue": 9,
+  "related_issues": [12, 15],
+  "branch": "feature/example",
+  "picked_at": "2026-02-15T10:30:00Z"
+}
+```
 
 ## 基本フロー
 
-### 1. 実装
+### 1. 計画
 
-1. ユーザー指示に沿って実装する
-2. 必要なテストや検証を実行する
-3. 実装内容と検証結果を報告する
-4. 修正規模（変更ファイル数・影響範囲・挙動変更の有無）を確認し、レビューへ進むべきかを判断する
-5. 判断結果（レビューへ進む / 進まない）と理由を報告する
+1. ユーザー指示を分解し、必要な GitHub Issues を作成する
+2. 各Issueに目的・手順・受け入れ条件・チェックリストを記載する
+3. 各Issueに優先度ラベル（`priority:*`）を付与する
 
-### 1.5 レビュー移行判断の目安
+### 2. スコープ固定（任意）
 
-レビュー推奨（いずれか1つでも該当）:
+1. 必要なら `/pick` または `/p` で対象Issueを固定する
+2. 固定時は `primary_issue` と `related_issues` を明示する
+3. `.context/issue_scope.json` が未設定なら、Issue番号を依頼文で明示して進める
 
-1. 変更が複数ファイルにまたがる
-2. 外部仕様・公開I/F・挙動に変更がある
-3. 既存ロジックの分岐や状態遷移に手を入れている
-4. テスト追加・更新が必要な修正である
+### 3. 実装
 
-レビュー省略可（すべて満たす）:
+1. Conductorで対象Issue用のworkspace（worktree）を作成する
+2. 基底ブランチはリポジトリ標準の基底ブランチを使う（`main` 固定にしない）
+3. 着手時にIssueへ `status:in-progress` を付与する
+4. 実装・テストを行い、必要に応じてIssueコメントで進捗共有する
 
-1. 変更が軽微（タイポ、コメント、ドキュメント、明白な単純修正）である
-2. 影響範囲が1ファイル内で閉じている
-3. 実行した検証で意図どおりの結果が確認できている
+### 4. レビュー
 
-### 2. レビュー
+1. レビュー依頼時は対象Issue番号を明示する
+2. レビュー結果は GitHub Issue コメントに記載する
+3. レビュアーは対象Issue番号をコメント内に明記する
+4. 指摘は `採用 / 不採用 / 追加情報必要` で判定する
+5. 指摘にはファイルパス・行番号・根拠を含める
+6. レビュアーは最新の修正結果コメント（`/rv` / `/review-verify` の結果）も確認する
 
-1. 変更差分をレビューする（観点は `.ai/review.md` を参照）
-2. 修正点がある場合は、先に `.context/_review_feedback.md` を作成する（テンプレートは `.ai/review.md` を参照）
-3. その後レビュー結果を報告する
-4. 修正点がない場合は `.context/_review_feedback.md` を作成しない
-5. 報告時に `.context/_review_feedback.md` の出力有無を明記する
-6. レビュー依頼時はIssue状態を `Review Waiting` に更新する
-7. 修正点がある場合は、対応着手時に `In Progress` へ戻す
-8. レビュー時点ではIssue状態を `Done` へは遷移させない
+### 5. `/review-verify`
 
-### 3. `/review-verify`
+- Claude Code:
+  - `/review-verify <issue-number>` または `/rv <issue-number>` を使用する
+  - 引数がない場合は `.context/issue_scope.json` を参照する
+  - 引数も `.context/issue_scope.json` もない場合は通常動作で進め、Issue連携は行わない
+  - `.context` に `related_issues` がある場合は関連Issueも対象に検証する
+  - Issue連携を行った場合のみ、修正後に対象Issueへ修正結果コメントを追記する
+- Codex:
+  - Slash Command は使えないため、同等内容をプロンプトで指示する
+  - 例: 「Issue #9 の最新レビューコメントを検証し、採用指摘のみ修正し、結果をIssueコメントに追記」
 
-1. `.context/_review_feedback.md` の有無を確認する
-2. 指摘を採用/不採用/追加情報必要に分類する
-3. 採用した指摘のみ修正する
-4. 必要なテストや検証を実行する
-5. すべての修正・テストが完了したら `.context/_review_feedback.md` を削除する
-6. 結果を報告する
+### 6. Codex疑似コマンド運用
 
-## Issue管理
+- Codexでは `/pick` `/p` `/review-verify` `/rv` `/commit` `/c` `/commit!` `/c!` をコマンドとして直接実行できない
+- 短縮形（`/p` `/rv` `/c` `/c!`）はClaude Code向けの別名であり、Codexではそのまま送らない
+- Codexへは「`/pick` 相当を実施」「`/rv` 相当を実施」のように、処理内容を文章で明示する
+- 例:
+  - `Issue #7 を primary_issue として .context/issue_scope.json を更新して（/pick 相当）`
+  - `Issue #7 のレビューコメントを検証し、採用指摘のみ修正してIssueへ結果コメントして（/rv 相当）`
+  - `git add -A 後に確認付きでコミット候補を提示して（/commit 相当）`
+  - `git add -A 後に最初の候補で即コミットして（/commit! 相当）`
 
-- 将来実装項目は `issues/index.md` と `issues/open/` 配下のIssueで管理する
-- コードコメントの TODO は TODO ID とセットで管理し、対応するIssueに記載する
-- 状態遷移は `issues/open/` → `issues/in-progress/` → `issues/review-waiting/` を基本とし、指摘対応時は `issues/in-progress/` に戻す
-- `Done` への遷移は、レビュー指摘の採用分対応完了とPRマージ完了後に行う
-- `issues/done/` は完了Issueのアーカイブとして扱う
+### 7. PRと完了
 
-## Worktree + PR運用
-
-1. まず `issues/open/` にIssueを作成し、目的・手順・受け入れ条件を定義する
-2. `main` からIssue専用worktreeを作成して実装する
-3. レビュー依頼時はIssueを `issues/review-waiting/` に移動し、必要に応じて別worktreeで差分確認と指摘整理を行う
-4. 1Issue 1PRを基本とし、PRは小さく分割して順次マージする
-5. レビューで修正が必要な場合はIssueを `issues/in-progress/` に戻して対応し、未解決指摘をなくしたら再度 `issues/review-waiting/` でレビューする
-6. PRマージ後に `issues/index.md` とIssue状態を `Done` へ更新し、`issues/done/` へアーカイブする（不要なら削除してもよい）
+1. PR本文に `Closes #<issue-number>` を記載する
+2. 複数Issueを同一PRで完了させる場合は、複数の `Closes #...` を記載してよい
+3. 参照のみのIssueは `Refs #<issue-number>` を使う
+4. PRが基底ブランチへマージされたらIssueが自動クローズされる

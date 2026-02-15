@@ -5,6 +5,7 @@
 - 指摘にはファイルパス・行番号・根拠を必ず含める
 - 「どう直すか」より先に「なぜ問題か」を明確にする
 - レビュー結果は日本語で報告する
+- レビュー結果は対象 GitHub Issue のコメントに記録する
 - レビュー連携の手順は `.ai/workflow.md` を参照する
 
 ## 観点（優先順）
@@ -21,18 +22,16 @@
 ## 出力テンプレート
 
 ```markdown
-# Review Feedback
+## Review Feedback
 
-- created_at: 2026-02-13 10:00
-- target: <レビュー対象>
+- issue: #<issue-number>
 - summary: 修正が必要な指摘あり
 - findings:
-  - High:
-    - id: F-01
-      location: path/to/file.ext:123
-      issue: 問題の内容
-      reason: 問題となる技術的理由
-      impact: 想定される影響
-  - Medium: []
-  - Low: []
+  - id: F-01
+    severity: High
+    location: path/to/file.ext:123
+    issue: 問題の内容
+    reason: 問題となる技術的理由
+    impact: 想定される影響
+    decision: 採用 / 不採用 / 追加情報必要
 ```
