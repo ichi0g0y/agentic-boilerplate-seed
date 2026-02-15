@@ -26,7 +26,7 @@
 
 ## ブランチ・worktree運用
 
-- リポジトリ標準の基底ブランチを基点にIssue単位のブランチを作成する
+- `develop` を基点にIssue単位のブランチを作成する（GitHubのデフォルトブランチ設定は変更しない）
 - Issue単位で専用worktreeを作成し、作業の混線を防ぐ
 - レビューや検証で分離が必要な場合は、追加worktreeを作成して確認する
 
@@ -34,7 +34,7 @@
 
 - 1Issue 1PRを基本とする
 - 1PRの変更は小さく保ち、段階的に適用する
-- PRのbaseブランチはリポジトリ標準の基底ブランチとする
+- PRのbaseブランチは `develop` とする
 - PR本文には対象Issue（`#<issue-number>`）への参照を記載する
 - 完了したIssueは PR本文に `Closes #<issue-number>` を記載し、マージ時に自動クローズする
 - 参照だけのIssueは `Refs #<issue-number>` を使う

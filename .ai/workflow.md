@@ -78,7 +78,7 @@
 
 1. Issue化して進める場合は、対象Issue番号が確定していることを確認する
 2. Conductorで対象Issue用のworkspace（worktree）を作成する
-3. 基底ブランチはリポジトリ標準の基底ブランチを使う（`main` 固定にしない）
+3. 基底ブランチは `develop` を使う（GitHubのデフォルトブランチ設定は変更しない）
 4. Issue化している場合は、着手時にIssueへ `status:in-progress` を付与する
 5. 実装・テストを行い、必要に応じてIssueコメントで進捗共有する
 
