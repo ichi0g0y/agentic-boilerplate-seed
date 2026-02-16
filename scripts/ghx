@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-set -euo pipefail
-
-if ! command -v gh >/dev/null 2>&1; then
-  echo "error: gh is not installed" >&2
-  exit 127
-fi
-
-exec gh "$@"
