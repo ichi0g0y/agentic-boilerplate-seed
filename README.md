@@ -46,11 +46,10 @@ Claude Code の組み込みエージェント、またはユーザーディレ�
 - `/commit` or `/c`: 確認付きコミット
 - `/commit!` or `/c!`: 即時コミット
 
-## gh と direnv の使い方
+## scripts/ghx の使い方
 
-- `gh` 実行は `scripts/ghx ...` を推奨する
-- `scripts/ghx` は内部で、`direnv` が使える場合にプロジェクトルートで `direnv exec` を実行する
-- `direnv` 未インストール時は警告を表示し、`gh` にフォールバックする
+- GitHub CLI 実行は `scripts/ghx ...` を推奨する
+- `scripts/ghx` のエラー出力に従って不足前提を解消する
 - 実行例: `scripts/ghx issue list`
 - 実行例: `scripts/ghx pr status`
 - 実行例: `scripts/ghx issue comment 9 --body "..."`
