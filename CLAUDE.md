@@ -11,7 +11,6 @@
 - レビュー結果は対象GitHub Issueコメントに記録する
 - `/review-verify <issue-number>` または `/rv <issue-number>` で採用指摘のみ修正する
 - 修正内容・進行状況・手順書・計画・レビュー観点は GitHub Issues に集約し、Issue単位worktree + 小PRで進める
-- GitHub CLI を使う場合は `gh ...` を使う。PR操作・レビューコメント記録にも同ルールを適用する
 
 ## 必読ドキュメント
 

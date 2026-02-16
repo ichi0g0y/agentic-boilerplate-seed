@@ -4,9 +4,8 @@
 
 - Codex / Claude の役割は固定しない
 - 修正内容・進行状況・手順書・計画・レビュー観点は GitHub Issues に集約する
-- GitHub操作手段は固定しない（`gh` / REST API / GraphQL API のいずれでもよい）
-- `gh` を使う場合は `gh ...` を直接使う
-- 認証切り替えが多い環境では、`gh auth` 依存を避けてAPI実行を優先してよい
+- GitHub操作手段は固定しない（REST API / GraphQL API など、環境に合う手段を選ぶ）
+- 認証切り替えが多い環境では、CLI認証依存を避けてAPI実行を優先してよい
 - 状態管理は GitHub Issue のラベル + Close で運用する
 - 1 Issue 1 worktree を基本とし、強く関連するIssueのみ同一worktreeで扱う
 - PR は小さく分割して順次マージする
@@ -90,7 +89,6 @@
 4. 指摘は `採用 / 不採用 / 追加情報必要` で判定する
 5. 指摘にはファイルパス・行番号・根拠を含める
 6. レビュアーは最新の修正結果コメント（`/rv` / `/review-verify` の結果）も確認する
-7. `gh` でレビュー結果を Issue に記録する場合は `gh issue comment ...` を使う
 
 ### 5. `/review-verify`
 
@@ -122,5 +120,4 @@
 1. PR本文に `Closes #<issue-number>` を記載する
 2. 複数Issueを同一PRで完了させる場合は、複数の `Closes #...` を記載してよい
 3. 参照のみのIssueは `Refs #<issue-number>` を使う
-4. `gh` で PR を作成/更新する場合は `gh pr ...` を使う
-5. PRが基底ブランチへマージされたらIssueが自動クローズされる
+4. PRが基底ブランチへマージされたらIssueが自動クローズされる
