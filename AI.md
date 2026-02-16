@@ -64,10 +64,9 @@ Conductorで依頼する際は、依頼文に次の追加条件を含めてく�
 ```text
 - レビュー運用の正は `.ai/review.md` と `.ai/workflow.md` を参照し、重複する指示がある場合はそちらを優先してください。
 - 対象Issue番号（例: `#9`）を明記してください。省略する場合は `.context/issue_scope.json` を先に設定してください。
-- **レビュー開始前に**、対象Issueの既存コメント（特に `/rv` / `/review-verify` 実行結果）を `gh issue view <number> --comments` で必ず確認してください。
+- **レビュー開始前に**、対象Issueの既存コメント（特に `/rv` / `/review-verify` 実行結果）を必ず確認してください。
 - レビュー結果の報告は必ず日本語で記述してください。
 - レビュー結果は対象Issueコメントに記載してください。
-- GitHub CLI でレビュー結果をIssueへ記録する場合は `gh issue comment ...` を使ってください。
 - `/review-verify` 相当の実行時は、指摘ごとに `採用 / 不採用 / 追加情報必要` を明記してください。
 - 修正を行った場合は、実施したテスト内容と結果を最終報告に必ず記載してください。
 - 最終報告には、追記したIssueコメントのURL（`issue_comment_url`）を必ず記載してください。
@@ -88,7 +87,6 @@ Conductorで依頼する際は、依頼文に次の追加条件を含めてく�
   - チェックリスト
 - 完了Issueは必ず `Closes #<issue-number>` を記載してください。
 - 参照のみのIssueは `Refs #<issue-number>` を記載してください。
-- GitHub CLI でPRを作成/更新する場合は `gh pr ...` を使ってください。
 - PR作成/更新後は `.context/issue_scope.json` の `pr_number`（必要に応じて `pr_url`）を更新し、後続作業で参照できるようにしてください。
 - 実行した確認コマンド（例: task check:all, task gen:api, task gen:db）と結果を本文に明記してください。
 - 未実施の検証がある場合は「未実施項目」と理由を明記してください。
