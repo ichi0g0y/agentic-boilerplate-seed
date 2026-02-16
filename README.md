@@ -41,17 +41,16 @@ Claude Code の組み込みエージェント、またはユーザーディレ�
 - 実装: 指示に沿って実装し、必要な検証結果を報告
 - `/pick` or `/p`: 必要時のみ対象Issueスコープを `.context` に固定
 - レビュー: 問題がある場合は対象Issueへレビューコメントを記録
-- `gh` を使う場合: `scripts/ghx ...` を使う（PR操作・レビューコメント記録に適用）
+- `gh` を使う場合: `gh ...` を直接使う（PR操作・レビューコメント記録に適用）
 - `/review-verify` or `/rv`: 指摘を検証し、採用したものだけ修正（Codexはプロンプトで同等指示）
 - `/commit` or `/c`: 確認付きコミット
 - `/commit!` or `/c!`: 即時コミット
 
-## scripts/ghx の使い方
+## gh の使い方
 
-- GitHub CLI 実行は `scripts/ghx ...` を推奨する
-- `scripts/ghx` のエラー出力に従って不足前提を解消する
-- 実行例: `scripts/ghx issue list`
-- 実行例: `scripts/ghx pr status`
-- 実行例: `scripts/ghx issue comment 9 --body "..."`
+- GitHub CLI は `gh ...` を直接使う
+- 実行例: `gh issue list`
+- 実行例: `gh pr status`
+- 実行例: `gh issue comment 9 --body "..."`
 
 詳細は `.ai/workflow.md` と `docs/guides/ISSUE_WORKFLOW.md` を参照してください。

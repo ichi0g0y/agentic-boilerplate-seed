@@ -17,7 +17,7 @@
 - レビュー結果は GitHub Issue コメントに記録する
 - 進行状態は `status:in-progress` ラベルとIssueクローズで管理する
 - GitHub操作は `gh` 固定にせず、必要に応じてAPI実行を選択してよい
-- `gh` を使う場合は `scripts/ghx ...` を基本とし、PR操作とレビューコメント記録にも同ルールを適用する
+- `gh` を使う場合は `gh ...` を直接使い、PR操作とレビューコメント記録にも同ルールを適用する
 - 既存の未コミット変更があっても、Issue化（Issue作成/番号確定）を止めない
 - `.context/issue_scope.json` を使う場合、未設定時は通常動作で進める
 - `.context/issue_scope.json` を再設定する場合は上書き前にユーザー確認を行う

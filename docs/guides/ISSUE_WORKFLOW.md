@@ -11,7 +11,7 @@
 - PRは小さく分割して順次マージする
 - PRのbaseは `develop` を使う（GitHubのデフォルトブランチ設定は変更しない）
 - GitHub操作手段は固定しない（`gh` / REST API / GraphQL API のいずれでもよい）
-- `gh` を使う場合は `scripts/ghx ...` を基本とする
+- `gh` を使う場合は `gh ...` を直接使う
 - 認証切り替えが多い環境では、`gh auth` 依存を避けてAPI実行を優先してよい
 
 ## 状態管理
@@ -91,7 +91,7 @@
 - 複数Issueを同一PRで完了させる場合は、複数の `Closes #...` を記載してよい
 - PR本文には対象Issue番号を明記する
 - 仕様判断や運用判断はPRだけに閉じず、要点をIssueコメントにも残す
-- `gh` でPRを作成/更新する場合は `scripts/ghx pr ...` を使う
+- `gh` でPRを作成/更新する場合は `gh pr ...` を使う
 
 ## 完了条件（DoD）
 
@@ -111,7 +111,7 @@
 - `/rv` / `/review-verify` でIssue連携した場合は修正結果コメントを対象Issueへ追記する
 - `.context` に `related_issues` がある場合は関連Issueもあわせて検証対象にする
 - レビュアーは最新の修正結果コメント（`/rv` / `/review-verify` 実行結果）も確認する
-- `gh` でレビュー結果をIssueへ記録する場合は `scripts/ghx issue comment ...` を使う
+- `gh` でレビュー結果をIssueへ記録する場合は `gh issue comment ...` を使う
 
 ## `/review-verify` / `/rv` の挙動
 

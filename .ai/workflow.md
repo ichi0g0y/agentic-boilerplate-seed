@@ -5,7 +5,7 @@
 - Codex / Claude の役割は固定しない
 - 修正内容・進行状況・手順書・計画・レビュー観点は GitHub Issues に集約する
 - GitHub操作手段は固定しない（`gh` / REST API / GraphQL API のいずれでもよい）
-- `gh` を使う場合は `scripts/ghx ...` を基本とする
+- `gh` を使う場合は `gh ...` を直接使う
 - 認証切り替えが多い環境では、`gh auth` 依存を避けてAPI実行を優先してよい
 - 状態管理は GitHub Issue のラベル + Close で運用する
 - 1 Issue 1 worktree を基本とし、強く関連するIssueのみ同一worktreeで扱う
@@ -37,7 +37,7 @@
 - `.context/issue_scope.json` が未設定でも、依頼文でIssue番号が明示されていれば進行してよい
 - 再 `/pick` / `/p` で既存スコープがある場合は、上書き前に警告してユーザー確認を行う
 - 複数Issueに関係する作業では、`primary_issue` + `related_issues` で複数Issueを保持することを基本とする
-- PR作成/更新後は、必要に応じて `.context/issue_scope.json` に `pr_number`（必要なら `pr_url`）を記録し、`/merge` の解決候補として使える状態にする
+- PR作成/更新後は、必要に応じて `.context/issue_scope.json` に `pr_number`（必要なら `pr_url`）を記録し、後続作業で参照できる状態にする
 - 共有ライブラリ変更で複数Issueに影響する場合は、各Issueコメントに関連Issueを相互記載する
 
 想定フォーマット:
@@ -90,7 +90,7 @@
 4. 指摘は `採用 / 不採用 / 追加情報必要` で判定する
 5. 指摘にはファイルパス・行番号・根拠を含める
 6. レビュアーは最新の修正結果コメント（`/rv` / `/review-verify` の結果）も確認する
-7. `gh` でレビュー結果を Issue に記録する場合は `scripts/ghx issue comment ...` を使う
+7. `gh` でレビュー結果を Issue に記録する場合は `gh issue comment ...` を使う
 
 ### 5. `/review-verify`
 
@@ -107,14 +107,13 @@
 ### 6. Codex疑似コマンド運用
 
 - Codexでは `/pick` `/p` `/review-verify` `/rv` `/commit` `/c` `/commit!` `/c!` をコマンドとして直接実行できない
-- Codexでは `/plan` `/pl` `/merge` `/m` もコマンドとして直接実行できない
-- 短縮形（`/pl` `/p` `/rv` `/m` `/c` `/c!`）はClaude Code向けの別名であり、Codexではそのまま送らない
+- Codexでは `/plan` `/pl` もコマンドとして直接実行できない
+- 短縮形（`/pl` `/p` `/rv` `/c` `/c!`）はClaude Code向けの別名であり、Codexではそのまま送らない
 - Codexへは「`/pick` 相当を実施」「`/rv` 相当を実施」のように、処理内容を文章で明示する
 - 例:
   - `AI.md と .ai の必読を読み込み、計画準備状態へ入って（/plan 相当）`
   - `Issue #7 を primary_issue として .context/issue_scope.json を更新して（/pick 相当）`
   - `Issue #7 のレビューコメントを検証し、採用指摘のみ修正してIssueへ結果コメントして（/rv 相当）`
-  - `PR #14 を安全確認して scripts/ghx でマージし、Issueへ結果コメントして（/merge 相当）`
   - `git add -A 後に確認付きでコミット候補を提示して（/commit 相当）`
   - `git add -A 後に最初の候補で即コミットして（/commit! 相当）`
 
@@ -123,5 +122,5 @@
 1. PR本文に `Closes #<issue-number>` を記載する
 2. 複数Issueを同一PRで完了させる場合は、複数の `Closes #...` を記載してよい
 3. 参照のみのIssueは `Refs #<issue-number>` を使う
-4. `gh` で PR を作成/更新する場合は `scripts/ghx pr ...` を使う
+4. `gh` で PR を作成/更新する場合は `gh pr ...` を使う
 5. PRが基底ブランチへマージされたらIssueが自動クローズされる
