@@ -13,7 +13,7 @@
 ## ディレクトリ構成
 
 - `.ai/`: エージェント共通ルール（必読）
-- `.claude/commands/`: Claude用コマンド定義（pick / p / review-verify / rv / commit / c / commit! / c!）
+- `.claude/commands/`: Claude用コマンド定義（pick / p / review-verify / rv / merge-to-main / mtm / commit / c / commit! / c!）
 - `BOOTSTRAP.md`: AIセッション開始時の初期手順
 - `docs/`: 最小限の運用ドキュメント
 - `.context/`: エージェント間の作業連携用（gitignore前提）
@@ -42,6 +42,7 @@ Claude Code の組み込みエージェント、またはユーザーディレ�
 - `/pick` or `/p`: 必要時のみ対象Issueスコープを `.context` に固定
 - レビュー: 問題がある場合は対象Issueへレビューコメントを記録
 - `/review-verify` or `/rv`: 指摘を検証し、採用したものだけ修正（Codexはプロンプトで同等指示）
+- `/merge-to-main` or `/mtm`: `develop -> main` のリリースPR作成における必須手順（`--merge` 指定時のみマージ）
 - `/commit` or `/c`: 確認付きコミット
 - `/commit!` or `/c!`: 即時コミット
 
