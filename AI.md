@@ -19,7 +19,7 @@ Conductorでの基本的な進め方は、次の順番です。
 3. レビュー依頼（対象Issue番号を明記し、レビュー結果はIssueコメントに記載）
 4. `/review-verify <issue-number>` または `/rv <issue-number>` で指摘対応し、修正結果をIssueコメントに記載（引数なし時は `.context` の `primary_issue` + `active_related_issues` を参照）
 5. 小さなPRを順次適用
-6. リリース時は `/merge-to-main` または `/mtm` で `develop -> main` のPRを作成（必須手順）
+6. リリース時は `/merge-to-main` または `/mtm` で `develop -> main` のPRを作成し、通常はそのままマージ（必須手順）
 7. 必要なら `/commit` / `/c` または `/commit!` / `/c!`
 
 ### コマンド説明
@@ -29,7 +29,7 @@ Conductorでの基本的な進め方は、次の順番です。
 - `/pick <primary-issue> [related-issues...]` または `/p <primary-issue> [related-issues...]`: `schema_version: 2` の `.context/issue_scope.json` に対象Issueを固定します（任意）。related issue を扱う場合は `active_related_issues` を `reserved` で確保し、`owner` / `reserved_at`（必要なら `expires_at`）を記録します。
 - レビュー依頼: 明示コマンドは不要です。差分レビューを依頼します。
 - `/review-verify <issue-number>` または `/rv <issue-number>`: 対象Issueのレビューコメントを読み込み、採用された指摘のみ修正します。Issue連携した場合は修正結果コメントをIssueへ追記します。引数なし時は `.context/issue_scope.json` の `primary_issue` と `active_related_issues`（`in_progress` / `ready_for_close`）を対象にします。
-- `/merge-to-main [--merge] [release-label]` または `/mtm [--merge] [release-label]`: `develop -> main` 反映時の必須手順です。`base=main` / `head=develop` のリリースPRを作成（既存Open PRがあれば再利用）します。`--merge` 指定時のみマージまで実行します。詳細は `.claude/commands/merge-to-main.md` を参照します。
+- `/merge-to-main [--no-merge] [release-label]` または `/mtm [--no-merge] [release-label]`: `develop -> main` 反映時の必須手順です。`base=main` / `head=develop` のリリースPRを作成（既存Open PRがあれば再利用）し、デフォルトでマージまで実行します。PR作成/再利用のみで止める場合は `--no-merge` を指定します。詳細は `.claude/commands/merge-to-main.md` を参照します。
 - `/commit` または `/c`: 確認付きコミットです。候補メッセージ確認後にコミットします。
 - `/commit!` または `/c!`: 確認なしで即時コミットします。
 
@@ -41,7 +41,7 @@ Conductorでの基本的な進め方は、次の順番です。
   - `AI.md と .ai の必読を読み込み、計画準備状態へ入って（/plan 相当）`
   - `Issue #7 を primary_issue として .context/issue_scope.json を更新して（/pick 相当）`
   - `Issue #7 のレビューコメントを検証し、採用指摘のみ修正してIssueへ結果コメントして（/rv 相当）`
-  - `develop から main へのリリースPRを作成し、.context の pr_number/pr_url を更新して（/mtm 相当）`
+  - `develop から main へのリリースPRを作成して通常はそのままマージし、.context の pr_number/pr_url を更新して（/mtm 相当）`
   - `git add -A 後に確認付きコミット候補を出して（/commit 相当）`
 
 ### レビュー連携の要点
