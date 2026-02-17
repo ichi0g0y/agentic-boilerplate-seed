@@ -2,7 +2,7 @@
 title: "main反映PRタスク"
 read_only: false
 type: "command"
-argument-hint: "[--merge] [release-label]"
+argument-hint: "[--no-merge] [release-label]"
 ---
 
 # main反映PR作成（/merge-to-main）
@@ -22,14 +22,15 @@ argument-hint: "[--merge] [release-label]"
    - タイトル例: `release: develop を main へ反映 (<YYYY-MM-DD>)`
    - 本文には、目的・影響範囲・確認手順・未実施項目を記載する。
 6. Open PRがある場合は、そのPRを再利用する（重複PRは作成しない）。
-7. `--merge` が明示された場合のみ、チェック成功を確認してPRをマージする。
+7. `--no-merge` が明示されていない場合は、チェック成功を確認してPRをマージする。
 8. `.context/issue_scope.json` を使う運用の場合は、`pr_number` / `pr_url` / `updated_at` をロック付きで更新する。
 9. 結果を日本語で報告する（作成/再利用したPR URL、マージ有無、未実施項目）。
 
 ## ルール
 
-- デフォルト動作は「PR作成または再利用まで」。自動マージはしない。
+- デフォルト動作は「PR作成または再利用後にマージまで実行」。
+- `--no-merge` 指定時のみ、PR作成または再利用までで止める。
 - `main` への直接push/直接マージは行わない。
-- `--merge` 指定時でも、必須チェック未通過ならマージしない。
+- 必須チェック未通過ならマージしない。
 - 既存のOpenな `develop -> main` PRがある場合は、それを優先して使う。
 - コンフリクトがある場合は自動解消しない。`develop` 側で解消してから同一PRを更新する。

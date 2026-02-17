@@ -139,7 +139,7 @@
   - `AI.md と .ai の必読を読み込み、計画準備状態へ入って（/plan 相当）`
   - `Issue #7 を primary_issue として .context/issue_scope.json を更新して（/pick 相当）`
   - `Issue #7 のレビューコメントを検証し、採用指摘のみ修正してIssueへ結果コメントして（/rv 相当）`
-  - `develop から main へのリリースPRを作成（必要ならマージ）して、.context の pr_number/pr_url を更新して（/mtm 相当）`
+  - `develop から main へのリリースPRを作成して通常はそのままマージし、必要なら --no-merge で作成のみ実行して、.context の pr_number/pr_url を更新して（/mtm 相当）`
   - `git add -A 後に確認付きでコミット候補を提示して（/commit 相当）`
   - `git add -A 後に最初の候補で即コミットして（/commit! 相当）`
 
