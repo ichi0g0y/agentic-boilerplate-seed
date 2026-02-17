@@ -34,21 +34,47 @@
 - Issue化しない場合は、Issue未作成で進める合意をユーザーと確認して進める
 - 計画相談・壁打ちなど、ファイル変更を伴わない場合はIssueスコープ未設定でもよい
 - `.context/issue_scope.json` が未設定でも、依頼文でIssue番号が明示されていれば進行してよい
+- `.context/issue_scope.json` は `schema_version: 2` を基本形式とし、`primary_issue` / `related_issues` / `active_related_issues` を使って状態管理する
+- 用語:
+  - `primary_issue`: このworktree/チャットの主担当Issue
+  - `related_issues`: 関連Issueの候補集合
+  - `active_related_issues`: 今回の実作業対象（状態付き）
+- `active_related_issues` の状態は `reserved` / `in_progress` / `ready_for_close` / `closed` を使用し、推奨遷移は `reserved -> in_progress -> ready_for_close -> closed` とする
+- `/pick` 引数ありは `primary_issue` 固定 + `related_issues` 記録、引数なしは Open Issue を優先度順（`P0 -> P1 -> P2 -> P3 -> 優先度なし`）で `primary_issue` に選定する
+- related issue を扱う場合は、未アクティブまたは期限切れのIssueから1件を `reserved` で確保し、`owner` / `reserved_at`（必要に応じて `expires_at`）を記録してよい
 - 再 `/pick` / `/p` で既存スコープがある場合は、上書き前に警告してユーザー確認を行う
-- 複数Issueに関係する作業では、`primary_issue` + `related_issues` で複数Issueを保持することを基本とする
 - PR作成/更新後は、必要に応じて `.context/issue_scope.json` に `pr_number`（必要なら `pr_url`）を記録し、後続作業で参照できる状態にする
+- `issue_scope.json` 更新時は排他制御を必須とし、`mkdir .context/.issue_scope.lock` 等でロック取得後に一時ファイルへ書き込み、`mv` で置換する
+- ロックは更新成功/失敗にかかわらず必ず解放する
 - 共有ライブラリ変更で複数Issueに影響する場合は、各Issueコメントに関連Issueを相互記載する
 
 想定フォーマット:
 
 ```json
 {
+  "schema_version": 2,
   "primary_issue": 9,
-  "related_issues": [12, 15],
+  "related_issues": [12, 15, 18],
+  "active_related_issues": {
+    "12": {
+      "state": "in_progress",
+      "owner": "conductor:ws-event:chat-a",
+      "reserved_at": "2026-02-15T10:30:00Z",
+      "expires_at": "2026-02-15T12:30:00Z",
+      "updated_at": "2026-02-15T10:45:00Z"
+    },
+    "15": {
+      "state": "ready_for_close",
+      "owner": "conductor:ws-event:chat-a",
+      "reserved_at": "2026-02-15T10:50:00Z",
+      "updated_at": "2026-02-15T11:40:00Z"
+    }
+  },
   "branch": "feature/example",
   "pr_number": 34,
   "pr_url": "https://github.com/example/repo/pull/34",
-  "picked_at": "2026-02-15T10:30:00Z"
+  "picked_at": "2026-02-15T10:30:00Z",
+  "updated_at": "2026-02-15T11:40:00Z"
 }
 ```
 
@@ -69,9 +95,10 @@
 ### 2. スコープ固定（任意）
 
 1. 必要なら `/pick` または `/p` で対象Issueを固定する
-2. 固定時は `primary_issue` と `related_issues` を明示し、複数Issueがある場合は `related_issues` に必ず記録する
-3. `.context/issue_scope.json` が未設定でも、Issue番号を依頼文で明示して進めてよい
-4. Issue化して進める場合に `.context` と依頼文のどちらにもIssue番号がないときは、Issue起票または番号指定を確認する
+2. 固定時は `schema_version: 2` の `issue_scope` 形式を使い、`primary_issue` / `related_issues` / `active_related_issues` を記録する
+3. related issue を実作業対象として扱う場合は `active_related_issues` に `reserved` で確保し、`owner` / `reserved_at`（必要なら `expires_at`）を記録する
+4. `.context/issue_scope.json` が未設定でも、Issue番号を依頼文で明示して進めてよい
+5. Issue化して進める場合に `.context` と依頼文のどちらにもIssue番号がないときは、Issue起票または番号指定を確認する
 
 ### 3. 実装
 
@@ -94,13 +121,13 @@
 
 - Claude Code:
   - `/review-verify <issue-number>` または `/rv <issue-number>` を使用する
-  - 引数がない場合は `.context/issue_scope.json` を参照する
+  - 引数がない場合は `.context/issue_scope.json` の `primary_issue` と `active_related_issues`（`in_progress` / `ready_for_close`）を対象にする
   - 引数も `.context/issue_scope.json` もない場合は通常動作で進め、Issue連携は行わない
-  - `.context` に `related_issues` がある場合は関連Issueも対象に検証する
+  - 指摘を反映したIssueのみ `active_related_issues` の状態を更新する
   - Issue連携を行った場合のみ、修正後に対象Issueへ修正結果コメントを追記する
 - Codex:
   - Slash Command は使えないため、同等内容をプロンプトで指示する
-  - 例: 「Issue #9 の最新レビューコメントを検証し、採用指摘のみ修正し、結果をIssueコメントに追記」
+  - 例: 「Issue #9 の最新レビューコメントを検証し、採用指摘のみ修正し、反映したIssueの `active_related_issues` 状態を更新して結果をIssueコメントに追記」
 
 ### 6. Codex疑似コマンド運用
 
@@ -117,7 +144,8 @@
 
 ### 7. PRと完了
 
-1. PR本文に `Closes #<issue-number>` を記載する
-2. 複数Issueを同一PRで完了させる場合は、複数の `Closes #...` を記載してよい
-3. 参照のみのIssueは `Refs #<issue-number>` を使う
-4. PRが基底ブランチへマージされたらIssueが自動クローズされる
+1. `Closes` / `Refs` の判定対象は `primary_issue + active_related_issues + related_issues` とする
+2. `Closes` は `primary_issue` と、`active_related_issues` が `ready_for_close` / `closed` のIssueを記載する
+3. `Refs` は `active_related_issues` が `reserved` / `in_progress` のIssue、および候補のみ（`related_issues` のみ）のIssueを記載する
+4. 複数Issueを同一PRで扱う場合、上記判定に沿って `Closes #...` / `Refs #...` を複数併記してよい
+5. PRが基底ブランチへマージされたらIssueが自動クローズされる

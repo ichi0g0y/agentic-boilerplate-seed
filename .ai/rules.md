@@ -20,8 +20,11 @@
 - 既存の未コミット変更があっても、Issue化（Issue作成/番号確定）を止めない
 - `.context/issue_scope.json` を使う場合、未設定時は通常動作で進める
 - `.context/issue_scope.json` を再設定する場合は上書き前にユーザー確認を行う
-- 複数Issueに関係する作業は `primary_issue` と `related_issues` を使って `issue_scope` に記録する
+- `.context/issue_scope.json` の基本形式は `schema_version: 2` とし、`primary_issue` / `related_issues` / `active_related_issues` / `branch` / `picked_at` / `updated_at` を保存する
+- 複数Issueに関係する作業は `primary_issue` と `related_issues` を使って `issue_scope` に記録し、実作業対象は `active_related_issues` で状態管理する
 - PR作成/更新後は `issue_scope` を使う運用であれば `pr_number`（必要に応じて `pr_url`）を記録する
+- `issue_scope.json` 更新は原子更新を必須とし、`mkdir .context/.issue_scope.lock` 等で排他後に一時ファイルへ書き込み、`mv` で置換する
+- `issue_scope.json` 更新処理は成功/失敗にかかわらずロック解放を必ず行う
 - 実装とレビューはIssue単位でworktreeを分けて進める
 
 ## 品質ルール

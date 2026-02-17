@@ -17,7 +17,7 @@ Conductorでの基本的な進め方は、次の順番です。
 1. GitHub Issue に計画・手順・受け入れ条件・進行状況を記載
 2. Issue単位でworktreeを作成し、必要なら `/pick` または `/p` で対象Issueを `.context` に固定
 3. レビュー依頼（対象Issue番号を明記し、レビュー結果はIssueコメントに記載）
-4. `/review-verify <issue-number>` または `/rv <issue-number>` で指摘対応し、修正結果をIssueコメントに記載（引数なし時は `.context` を参照）
+4. `/review-verify <issue-number>` または `/rv <issue-number>` で指摘対応し、修正結果をIssueコメントに記載（引数なし時は `.context` の `primary_issue` + `active_related_issues` を参照）
 5. 小さなPRを順次適用
 6. 必要なら `/commit` / `/c` または `/commit!` / `/c!`
 
@@ -25,9 +25,9 @@ Conductorでの基本的な進め方は、次の順番です。
 
 - コーディング依頼: 明示コマンドは不要です。通常の依頼文で実装を指示します。
 - `/plan` または `/pl`: `AI.md` と `.ai/*`（+ `.context/issue_scope.json` があればそれも）を読み込み、計画準備状態に入ります。実装・Issue作成・マージは行いません。
-- `/pick <primary-issue> [related-issues...]` または `/p <primary-issue> [related-issues...]`: 対象Issueを `.context/issue_scope.json` に固定します（任意）。
+- `/pick <primary-issue> [related-issues...]` または `/p <primary-issue> [related-issues...]`: `schema_version: 2` の `.context/issue_scope.json` に対象Issueを固定します（任意）。related issue を扱う場合は `active_related_issues` を `reserved` で確保し、`owner` / `reserved_at`（必要なら `expires_at`）を記録します。
 - レビュー依頼: 明示コマンドは不要です。差分レビューを依頼します。
-- `/review-verify <issue-number>` または `/rv <issue-number>`: 対象Issueのレビューコメントを読み込み、採用された指摘のみ修正します。Issue連携した場合は修正結果コメントをIssueへ追記します。引数なし時は `.context/issue_scope.json` を参照します。
+- `/review-verify <issue-number>` または `/rv <issue-number>`: 対象Issueのレビューコメントを読み込み、採用された指摘のみ修正します。Issue連携した場合は修正結果コメントをIssueへ追記します。引数なし時は `.context/issue_scope.json` の `primary_issue` と `active_related_issues`（`in_progress` / `ready_for_close`）を対象にします。
 - `/commit` または `/c`: 確認付きコミットです。候補メッセージ確認後にコミットします。
 - `/commit!` または `/c!`: 確認なしで即時コミットします。
 
@@ -85,8 +85,9 @@ Conductorで依頼する際は、依頼文に次の追加条件を含めてく�
   - テスト手順
   - 影響範囲
   - チェックリスト
-- 完了Issueは必ず `Closes #<issue-number>` を記載してください。
-- 参照のみのIssueは `Refs #<issue-number>` を記載してください。
+- `Closes` / `Refs` の判定対象は `primary_issue + active_related_issues + related_issues` にしてください。
+- `Closes` には `primary_issue` と `active_related_issues` が `ready_for_close` / `closed` のIssueを記載してください。
+- `Refs` には `active_related_issues` が `reserved` / `in_progress` のIssue、および候補のみ（`related_issues` のみ）のIssueを記載してください。
 - PR作成/更新後は `.context/issue_scope.json` の `pr_number`（必要に応じて `pr_url`）を更新し、後続作業で参照できるようにしてください。
 - 実行した確認コマンド（例: task check:all, task gen:api, task gen:db）と結果を本文に明記してください。
 - 未実施の検証がある場合は「未実施項目」と理由を明記してください。
