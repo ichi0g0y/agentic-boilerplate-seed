@@ -2,7 +2,7 @@
 title: "main反映PRタスク"
 read_only: false
 type: "command"
-argument-hint: "[--merge] [release-label]"
+argument-hint: "[--no-merge] [release-label]"
 ---
 
 # main反映PR作成（/mtm）
@@ -16,5 +16,5 @@ argument-hint: "[--merge] [release-label]"
 
 - `base=main` / `head=develop` のPR作成（または既存PR再利用）を行う。
 - `develop -> main` 反映時は本コマンド（または `/merge-to-main`）を必須で利用する。
-- `--merge` がない限り、PRは作成/更新のみで止める。
+- `--no-merge` がない限り、PRは作成/更新後にマージまで行う。
 - `.context/issue_scope.json` を使う場合は `pr_number` / `pr_url` を更新する。
