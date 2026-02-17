@@ -6,24 +6,23 @@
 
 - 実装前にAI運用ルールを先に固定する
 - 技術スタック未決定でも使えるよう、言語依存ルールを持ち込まない
-- レビュー連携は `.context/_review_feedback.md` のみで管理する
-- 計画・手順・レビュー観点は `issues/` に集約し、`docs/` は確定情報のみを保持する
+- レビュー連携は GitHub Issue コメントで管理する
+- 修正内容・進行状況・計画・手順・レビュー観点は GitHub Issues に集約し、`docs/` は確定情報のみを保持する
 - Issue単位でworktreeを分離し、小さなPRを順次適用する
 
 ## ディレクトリ構成
 
 - `.ai/`: エージェント共通ルール（必読）
-- `.claude/commands/`: Claude用コマンド定義（commit / review-verify）
+- `.claude/commands/`: Claude用コマンド定義（pick / p / review-verify / rv / commit / c / commit! / c!）
 - `BOOTSTRAP.md`: AIセッション開始時の初期手順
 - `docs/`: 最小限の運用ドキュメント
-- `issues/`: Issue管理（一覧・テンプレート・状態別ディレクトリ）
 - `.context/`: エージェント間の作業連携用（gitignore前提）
 
 ## 使い始める手順
 
 1. `docs/guides/GETTING_STARTED.md` を読む
 2. `.ai/project.md` に今回の目的と制約を書く
-3. 言語選定までは、設計・要件・タスク分解（`issues/`）を中心に進める
+3. 言語選定までは、設計・要件・タスク分解（GitHub Issues）を中心に進める
 4. 言語選定後に、必要な開発/テストコマンドを `docs/` と `.ai/` に追加する
 
 ## BOOTSTRAP.md の使い方
@@ -40,7 +39,15 @@ Claude Code の組み込みエージェント、またはユーザーディレ�
 ## AI協調フロー
 
 - 実装: 指示に沿って実装し、必要な検証結果を報告
-- レビュー: 問題がある場合のみ `.context/_review_feedback.md` を先に作成
-- `/review-verify`: 指摘を検証し、採用したものだけ修正
+- `/pick` or `/p`: 必要時のみ対象Issueスコープを `.context` に固定
+- レビュー: 問題がある場合は対象Issueへレビューコメントを記録
+- `/review-verify` or `/rv`: 指摘を検証し、採用したものだけ修正（Codexはプロンプトで同等指示）
+- `/commit` or `/c`: 確認付きコミット
+- `/commit!` or `/c!`: 即時コミット
 
-詳細は `.ai/workflow.md` を参照してください。
+## GitHub操作の方針
+
+- GitHub操作の手段は固定しない
+- 実行手段が変わっても、Issue / PR / コメント / ラベルの結果を一致させる
+
+詳細は `.ai/workflow.md` と `docs/guides/ISSUE_WORKFLOW.md` を参照してください。

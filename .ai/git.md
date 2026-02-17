@@ -2,7 +2,7 @@
 
 ## コミット制限
 
-- `/commit` または `/commit!` の明示がない限り、コミットしない
+- `/commit` / `/c` または `/commit!` / `/c!` の明示がない限り、コミットしない
 - 曖昧な承認（OK、進めて等）ではコミットしない
 
 ## メッセージ形式
@@ -20,11 +20,13 @@
 
 - `/commit`: 候補メッセージを提示し、確認後にコミット
 - `/commit!`: 最初の候補で即コミット
+- `/c`: `/commit` の短縮コマンド
+- `/c!`: `/commit!` の短縮コマンド
 - どちらも `git add -A` を前提に運用する
 
 ## ブランチ・worktree運用
 
-- `main` を基点にIssue単位のブランチを作成する
+- `develop` を基点にIssue単位のブランチを作成する（GitHubのデフォルトブランチ設定は変更しない）
 - Issue単位で専用worktreeを作成し、作業の混線を防ぐ
 - レビューや検証で分離が必要な場合は、追加worktreeを作成して確認する
 
@@ -32,5 +34,9 @@
 
 - 1Issue 1PRを基本とする
 - 1PRの変更は小さく保ち、段階的に適用する
-- PRのbaseブランチは `main` とする
-- PR本文には対象Issue（`issues/.../README.md`）への参照を記載する
+- PRのbaseブランチは `develop` とする
+- PR本文には対象Issue（`#<issue-number>`）への参照を記載する
+- `Closes` / `Refs` の判定対象は `primary_issue + active_related_issues + related_issues` とする
+- `Closes` は `primary_issue` と、`active_related_issues` が `ready_for_close` / `closed` のIssueを記載する
+- `Refs` は `active_related_issues` が `reserved` / `in_progress` のIssue、および候補のみ（`related_issues` のみ）のIssueを記載する
+- 複数Issueを同一PRで扱う場合、上記判定に沿って `Closes #...` / `Refs #...` を複数併記してよい
