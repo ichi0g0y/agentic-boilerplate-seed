@@ -11,12 +11,15 @@
 - `.ai/rules.md`
 - `.ai/workflow.md`
 - `.ai/review.md`
+- `.ai/dev-env.md`
 
 ## 3. 技術選定前にやること
 
 - 要件整理
 - 画面・API・データのラフ設計
-- タスク分解（`issues/index.md` と `issues/open/`）
+- タスク分解（GitHub Issues）
+- 優先度ラベル定義（`priority:P0` / `P1` / `P2` / `P3`）
+- 必要なら `/pick` / `/p` を使ったIssueスコープ共有（`.context/issue_scope.json`）を準備する
 - Issue単位でworktreeを分ける運用準備
 - 小さなPRを順次適用する前提で作業を分割
 
