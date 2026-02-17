@@ -36,6 +36,7 @@
 - 1PRの変更は小さく保ち、段階的に適用する
 - PRのbaseブランチは `develop` とする
 - PR本文には対象Issue（`#<issue-number>`）への参照を記載する
-- 完了したIssueは PR本文に `Closes #<issue-number>` を記載し、マージ時に自動クローズする
-- 参照だけのIssueは `Refs #<issue-number>` を使う
-- 複数Issueを同一PRで完了させる場合は、複数の `Closes #...` を記載してよい
+- `Closes` / `Refs` の判定対象は `primary_issue + active_related_issues + related_issues` とする
+- `Closes` は `primary_issue` と、`active_related_issues` が `ready_for_close` / `closed` のIssueを記載する
+- `Refs` は `active_related_issues` が `reserved` / `in_progress` のIssue、および候補のみ（`related_issues` のみ）のIssueを記載する
+- 複数Issueを同一PRで扱う場合、上記判定に沿って `Closes #...` / `Refs #...` を複数併記してよい
