@@ -131,14 +131,15 @@
 
 ### 6. Codex疑似コマンド運用
 
-- Codexでは `/pick` `/p` `/review-verify` `/rv` `/commit` `/c` `/commit!` `/c!` をコマンドとして直接実行できない
+- Codexでは `/pick` `/p` `/review-verify` `/rv` `/merge-to-main` `/mtm` `/commit` `/c` `/commit!` `/c!` をコマンドとして直接実行できない
 - Codexでは `/plan` `/pl` もコマンドとして直接実行できない
-- 短縮形（`/pl` `/p` `/rv` `/c` `/c!`）はClaude Code向けの別名であり、Codexではそのまま送らない
-- Codexへは「`/pick` 相当を実施」「`/rv` 相当を実施」のように、処理内容を文章で明示する
+- 短縮形（`/pl` `/p` `/rv` `/mtm` `/c` `/c!`）はClaude Code向けの別名であり、Codexではそのまま送らない
+- Codexへは「`/pick` 相当を実施」「`/rv` 相当を実施」「`/mtm` 相当を実施」のように、処理内容を文章で明示する
 - 例:
   - `AI.md と .ai の必読を読み込み、計画準備状態へ入って（/plan 相当）`
   - `Issue #7 を primary_issue として .context/issue_scope.json を更新して（/pick 相当）`
   - `Issue #7 のレビューコメントを検証し、採用指摘のみ修正してIssueへ結果コメントして（/rv 相当）`
+  - `develop から main へのリリースPRを作成（必要ならマージ）して、.context の pr_number/pr_url を更新して（/mtm 相当）`
   - `git add -A 後に確認付きでコミット候補を提示して（/commit 相当）`
   - `git add -A 後に最初の候補で即コミットして（/commit! 相当）`
 
@@ -149,3 +150,4 @@
 3. `Refs` は `active_related_issues` が `reserved` / `in_progress` のIssue、および候補のみ（`related_issues` のみ）のIssueを記載する
 4. 複数Issueを同一PRで扱う場合、上記判定に沿って `Closes #...` / `Refs #...` を複数併記してよい
 5. PRが基底ブランチへマージされたらIssueが自動クローズされる
+6. `develop -> main` 反映時は `/merge-to-main` / `/mtm` 相当の手順を必須とする
