@@ -46,6 +46,10 @@
    - どの情報を GitHub Issues に移すかを明記する
    - 移行後、旧タスク管理ドキュメントへの参照が残っていないことを確認する
    - 移行完了した旧タスク管理ドキュメント（`docs/TODO.md` など）は削除する
+7. `main` デフォルト + `develop` 統合運用を採用する場合は `docs/guides/DEVELOP_FLOW_BOOTSTRAP.md` を適用する
+   - `release:pending` ラベル運用と2つのGitHub Actionsを導入する
+   - develop向けPR本文で `Closes/Fixes/Resolves #...` を必須化する
+   - `develop -> main` 反映時は `/merge-to-main` または `/mtm` を必須手順として導入する
 
 ## 初回依頼テンプレート（ユーザー用）
 
