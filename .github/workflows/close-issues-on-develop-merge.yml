@@ -29,6 +29,7 @@ jobs:
             try {
               await github.rest.issues.getLabel({ owner, repo, name: "release:pending" })
             } catch (e) {
+              if (e.status !== 404) throw e
               await github.rest.issues.createLabel({
                 owner,
                 repo,
@@ -38,17 +39,21 @@ jobs:
               })
             }
 
+            let hasReferencedIssue = false
             for (const issue_number of issueNumbers) {
               const { data: issue } = await github.rest.issues.get({ owner, repo, issue_number })
               if (issue.pull_request) continue
+              hasReferencedIssue = true
               if (issue.state === "open") {
                 await github.rest.issues.update({ owner, repo, issue_number, state: "closed" })
               }
             }
 
-            await github.rest.issues.addLabels({
-              owner,
-              repo,
-              issue_number: pr.number,
-              labels: ["release:pending"]
-            })
+            if (hasReferencedIssue) {
+              await github.rest.issues.addLabels({
+                owner,
+                repo,
+                issue_number: pr.number,
+                labels: ["release:pending"]
+              })
+            }

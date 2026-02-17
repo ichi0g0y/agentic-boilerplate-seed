@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/github-script@v7
         env:
-          RELEASE_LABEL: ""
+          RELEASE_LABEL: ${{ vars.RELEASE_LABEL || '' }}
         with:
           script: |
             const owner = context.repo.owner

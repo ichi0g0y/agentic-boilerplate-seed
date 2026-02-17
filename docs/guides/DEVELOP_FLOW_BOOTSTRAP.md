@@ -8,9 +8,9 @@
 ## 導入する仕様
 
 1. `develop` へのPRマージ時に `Closes/Fixes/Resolves #...` を解析してIssueを自動クローズする
-2. 同PRへ `release:pending` ラベルを付与する
+2. Issue参照を含む同PRへ `release:pending` ラベルを付与する
 3. `main` への `develop` リリースPRマージ時に `release:pending` を除去する
-4. develop向けPR本文で `Closes #<issue-number>` を必須化する
+4. develop向けPR本文で `Closes/Fixes/Resolves` と `Refs` を使い分ける
 
 ## 前提
 
@@ -45,7 +45,7 @@
 - `pull_request.closed` かつ `base=develop` かつ `merged=true` で実行
 - PR本文から `Closes/Fixes/Resolves #<number>` を抽出
 - 対象Issue（PRではないIssue）のみ `closed` に更新
-- マージされたPRへ `release:pending` を付与
+- 対象Issue参照がある場合のみ、マージされたPRへ `release:pending` を付与
 
 ## Step 4. mainマージ時Action
 
@@ -56,7 +56,7 @@
 - さらに `head.ref == develop` のリリースPRだけ対象
 - リリースPRに含まれるコミットから関連PRを逆引き
 - 対象PRから `release:pending` を除去
-- `RELEASE_LABEL` 環境変数が空でなければ `released:vX.Y` などを追加付与
+- `RELEASE_LABEL`（`Repository Variables`）が空でなければ `released:vX.Y` などを追加付与
 
 制約:
 - `merge commit` 運用のほうが追跡精度が高い
@@ -64,13 +64,12 @@
 
 ## Step 5. PR運用ルール
 
-develop向けfeature PR本文には必ずIssueクローズキーワードを記載します。
+develop向けfeature PR本文では、Issue状態に応じてキーワードを使い分けます。
 
-- 例: `Closes #123`
-- 例: `Fixes #123`
-- 例: `Resolves #123`
+- 完了させるIssue: `Closes #123` / `Fixes #123` / `Resolves #123`
+- 継続中・関連Issue: `Refs #456`
 
-本テンプレートでは `.github/pull_request_template.md` に `Closes #<issue-number>` を固定で含めています。
+本テンプレートでは `.github/pull_request_template.md` に `Closes #<issue-number>` と `Refs #<issue-number>` を含めています。
 
 ## Step 6. mtm導線の導入（必須）
 
@@ -83,7 +82,7 @@ develop向けfeature PR本文には必ずIssueクローズキーワードを記�
 ## Step 7. 検証チェックリスト
 
 - [ ] developマージでIssueが自動クローズされる
-- [ ] developマージでPRに `release:pending` が付与される
+- [ ] developマージでIssue参照があるPRに `release:pending` が付与される
 - [ ] develop -> main リリースPRマージで `release:pending` が除去される
 - [ ] mainへのdirect pushが禁止されている
 

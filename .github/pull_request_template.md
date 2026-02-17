@@ -4,8 +4,9 @@
 
 ## 関連Issue
 
-<!-- develop向けfeature PRでは、以下のキーワードを必ず記載 -->
+<!-- 完了させるIssueは Closes、継続中/関連Issueは Refs を記載 -->
 Closes #<issue-number>
+Refs #<issue-number>
 
 ## 変更内容
 
