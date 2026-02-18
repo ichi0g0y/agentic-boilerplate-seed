@@ -28,6 +28,6 @@
 `絵文字 scope: 説明`
 
 - 説明は日本語で簡潔に記述します。
-- scope は変更対象を短く示します（例: `docs` `ai` `claude` `root`）。
+- scope は変更対象を短く示します（例: `docs` `workflow` `claude` `root`）。
 
 必要に応じて本文を続けます。
