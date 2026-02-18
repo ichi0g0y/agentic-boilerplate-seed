@@ -10,6 +10,9 @@
 - 1 Issue 1 worktree を基本とし、強く関連するIssueのみ同一worktreeで扱う
 - PR は小さく分割して順次マージする
 - 既存の未コミット変更があっても、Issue作成とIssue番号の確定は通常どおり進める
+- 新規タスク起票時は、同一目的・同一完了条件の作業を原則1つのIssueに集約し、進捗はIssue本文のチェックリストで管理する
+- Issue分割は優先度・担当・期限・リリース単位が異なる場合に限定し、分割時は親子Issueを `Refs #...` で相互参照する
+- `/pick` / `/p` 等の明示指示がない依頼は、まず plan モードとして Issue設計とスコープ確認を行う
 
 ## Issue状態とラベル
 
@@ -29,6 +32,8 @@
 
 - `.context/issue_scope.json` を使って対象Issueを共有してよい
 - `/pick` / `/p` の実行自体は任意
+- 実装着手時に `primary_issue` と必要な `related_issues` を確定する
+- `/pick` / `/p` 等の明示指示がない依頼は、まず plan モードとして Issue設計とスコープ確認を行う
 - ファイル変更を伴う依頼では、着手前に「Issue化するか」を必ずユーザーへ確認する
 - Issue化する場合はIssue作成またはIssue番号指定を行い、対象Issue番号を確定してから進める
 - Issue化しない場合は、Issue未作成で進める合意をユーザーと確認して進める
@@ -82,23 +87,27 @@
 
 ### 0. 修正依頼の受付ゲート
 
-1. ファイル変更を伴う依頼を受けたら、着手前にIssue化可否をユーザーへ確認する
-2. Issue化がOKならIssueを作成し、Issue番号を確定する（既存の未コミット変更があっても止めない）
-3. Issue化しない場合は、Issue未作成で進める合意を明示してから進める
+1. `/pick` / `/p` 等の明示指示がない依頼は、まず plan モードとして Issue設計とスコープ確認を行う
+2. ファイル変更を伴う依頼を受けたら、着手前にIssue化可否をユーザーへ確認する
+3. Issue化がOKならIssueを作成し、Issue番号を確定する（既存の未コミット変更があっても止めない）
+4. Issue化しない場合は、Issue未作成で進める合意を明示してから進める
 
 ### 1. 計画
 
-1. ユーザー指示を分解し、Issue化する対象の GitHub Issues を作成する
-2. 各Issueに目的・手順・受け入れ条件・チェックリストを記載する
-3. 各Issueに優先度ラベル（`priority:*`）を付与する
+1. ユーザー指示を分解し、同一目的・同一完了条件の作業を原則1つのIssueに集約する
+2. Issue分割が必要な場合は、優先度・担当・期限・リリース単位の差異を根拠に分割する
+3. 分割した親子Issueは `Refs #...` で相互参照する
+4. 各Issueに目的・手順・受け入れ条件・チェックリストを記載する
+5. 各Issueに優先度ラベル（`priority:*`）を付与する
 
-### 2. スコープ固定（任意）
+### 2. スコープ固定
 
-1. 必要なら `/pick` または `/p` で対象Issueを固定する
-2. 固定時は `schema_version: 2` の `issue_scope` 形式を使い、`primary_issue` / `related_issues` / `active_related_issues` を記録する
-3. related issue を実作業対象として扱う場合は `active_related_issues` に `reserved` で確保し、`owner` / `reserved_at`（必要なら `expires_at`）を記録する
-4. `.context/issue_scope.json` が未設定でも、Issue番号を依頼文で明示して進めてよい
-5. Issue化して進める場合に `.context` と依頼文のどちらにもIssue番号がないときは、Issue起票または番号指定を確認する
+1. 実装着手時に `primary_issue` と必要な `related_issues` を確定する
+2. 必要なら `/pick` または `/p` で対象Issueを固定する
+3. 固定時は `schema_version: 2` の `issue_scope` 形式を使い、`primary_issue` / `related_issues` / `active_related_issues` を記録する
+4. related issue を実作業対象として扱う場合は `active_related_issues` に `reserved` で確保し、`owner` / `reserved_at`（必要なら `expires_at`）を記録する
+5. `.context/issue_scope.json` が未設定でも、Issue番号を依頼文で明示して進めてよい
+6. Issue化して進める場合に `.context` と依頼文のどちらにもIssue番号がないときは、Issue起票または番号指定を確認する
 
 ### 3. 実装
 
@@ -148,6 +157,7 @@
 1. `Closes` / `Refs` の判定対象は `primary_issue + active_related_issues + related_issues` とする
 2. `Closes` は `primary_issue` と、`active_related_issues` が `ready_for_close` / `closed` のIssueを記載する
 3. `Refs` は `active_related_issues` が `reserved` / `in_progress` のIssue、および候補のみ（`related_issues` のみ）のIssueを記載する
-4. 複数Issueを同一PRで扱う場合、上記判定に沿って `Closes #...` / `Refs #...` を複数併記してよい
-5. PRが基底ブランチへマージされたらIssueが自動クローズされる
-6. `develop -> main` 反映時は `/merge-to-main` / `/mtm` 相当の手順を必須とする
+4. Issue分割時は、親子IssueそれぞれのIssue本文またはPR本文で `Refs #...` を相互に記載する
+5. 複数Issueを同一PRで扱う場合、上記判定に沿って `Closes #...` / `Refs #...` を複数併記してよい
+6. PRが基底ブランチへマージされたらIssueが自動クローズされる
+7. `develop -> main` 反映時は `/merge-to-main` / `/mtm` 相当の手順を必須とする
