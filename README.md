@@ -6,15 +6,14 @@
 
 - 実装前にAI運用ルールを先に固定する
 - 技術スタック未決定でも使えるよう、言語依存ルールを持ち込まない
-- レビュー連携は GitHub Issue コメントで管理する
+- レビュー連携は手動コピーまたは `.context/` 経由で共有する
 - 修正内容・進行状況・計画・手順・レビュー観点は GitHub Issues に集約し、`docs/` は確定情報のみを保持する
 - Issue単位でworktreeを分離し、小さなPRを順次適用する
 
 ## ディレクトリ構成
 
 - `.ai/`: エージェント共通ルール（必読）
-- `.claude/commands/`: Claude用コマンド定義（pick / p / review-verify / rv / merge-to-main / mtm / commit / c / commit! / c!）
-- `BOOTSTRAP.md`: AIセッション開始時の初期手順
+- `.claude/commands/`: Claude用コマンド定義（pick / p / deploy-to-production / dtp / deploy-to-staging / dts / commit / c / commit! / c!）
 - `docs/`: 最小限の運用ドキュメント
 - `.context/`: エージェント間の作業連携用（gitignore前提）
 
@@ -25,24 +24,13 @@
 3. 言語選定までは、設計・要件・タスク分解（GitHub Issues）を中心に進める
 4. 言語選定後に、必要な開発/テストコマンドを `docs/` と `.ai/` に追加する
 
-## BOOTSTRAP.md の使い方
-
-1. AIへ最初に依頼する前に `BOOTSTRAP.md` を開く
-2. `BOOTSTRAP.md` の「初回依頼テンプレート」をそのまま依頼文に含め、対象リポジトリURLを明記する
-3. AIの初回返答で、読込ルール・作業対象・制約確認が報告されていることを確認する
-
-## エージェント定義について
-
-このテンプレートでは `.claude/agents/` にカスタムエージェント定義を意図的に配置していません。
-Claude Code の組み込みエージェント、またはユーザーディレクトリ（`~/.claude/agents/`）のエージェント定義を使用する方針です。
-
 ## AI協調フロー
 
 - 実装: 指示に沿って実装し、必要な検証結果を報告
-- `/pick` or `/p`: 必要時のみ対象Issueスコープを `.context` に固定
-- レビュー: 問題がある場合は対象Issueへレビューコメントを記録
-- `/review-verify` or `/rv`: 指摘を検証し、採用したものだけ修正（Codexはプロンプトで同等指示）
-- `/merge-to-main` or `/mtm`: `develop -> main` のリリースPR作成における必須手順（`--merge` 指定時のみマージ）
+- `/pick` or `/p`: 必要時のみ対象Issueを `.context/current_issue` に固定
+- レビュー: 指摘を手動コピーまたは `.context/` 経由で共有
+- `/deploy-to-production` or `/dtp`: `develop -> main` のリリースPR作成導線
+- `/deploy-to-staging` or `/dts`: `develop -> staging` の反映PR作成導線
 - `/commit` or `/c`: 確認付きコミット
 - `/commit!` or `/c!`: 即時コミット
 
