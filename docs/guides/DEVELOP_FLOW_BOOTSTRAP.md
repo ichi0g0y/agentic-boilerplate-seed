@@ -26,9 +26,6 @@
   - 色: `BFD4F2`（推奨）
 - 任意ラベル: `released:vX.Y`
 
-補足:
-- `close-issues-on-develop-merge.yml` は、ラベル未作成時に自動で `release:pending` を作成します。
-
 ## Step 2. ブランチ保護
 
 `main` ブランチで以下を設定します。
@@ -58,10 +55,6 @@
 - 対象PRから `release:pending` を除去
 - `RELEASE_LABEL`（`Repository Variables`）が空でなければ `released:vX.Y` などを追加付与
 
-制約:
-- `merge commit` 運用のほうが追跡精度が高い
-- `squash/rebase` 混在時は、リリースPR本文に対象PR番号一覧を固定出力する運用を推奨
-
 ## Step 5. PR運用ルール
 
 develop向けfeature PR本文では、Issue状態に応じてキーワードを使い分けます。
@@ -71,12 +64,12 @@ develop向けfeature PR本文では、Issue状態に応じてキーワードを�
 
 本テンプレートでは `.github/pull_request_template.md` に `Closes #<issue-number>` と `Refs #<issue-number>` を含めています。
 
-## Step 6. mtm導線の導入（必須）
+## Step 6. 本番反映導線の導入（必須）
 
 `develop -> main` のリリースPRは、次の導線を必須で使用します。
 
-- `.claude/commands/merge-to-main.md` を追加
-- `.claude/commands/mtm.md` を追加
+- `.claude/commands/deploy-to-production.md` を追加
+- `.claude/commands/dtp.md` を追加
 - `base=main`, `head=develop` のPR作成/再利用を標準導線化
 
 ## Step 7. 検証チェックリスト
