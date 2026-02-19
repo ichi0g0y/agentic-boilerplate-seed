@@ -11,7 +11,7 @@
 - 運用方針: AI協調フローを先に固定
 - タスク運用: GitHub Issues 集約（Issue単位worktree + 小PR）
 - 状態管理: `status:in-progress` ラベル + Issueクローズ
-- Issueスコープ共有: 必要に応じて `.context/issue_scope.json` を利用
+- Issueスコープ共有: 必要に応じて `.context/current_issue` を利用
 
 ## ディレクトリ構成
 

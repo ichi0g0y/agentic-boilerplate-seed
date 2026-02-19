@@ -6,27 +6,26 @@
 
 - `AGENTS.md`
 - `CLAUDE.md`
-- `AI.md`
 - `.ai/*.md`
 - `.claude/commands/*.md`
+- `docs/conductor-prompts.md`
 
 ## 移植対象外ファイル（原則）
 
-- `BOOTSTRAP.md`
 - `docs/guides/AI_INSTRUCTION_PORTING.md`
-- 理由: いずれもテンプレート側の導入手順・参照資料であり、対象リポジトリの常設運用ファイルではないため
+- 理由: テンプレート側の導入手順・参照資料であり、対象リポジトリの常設運用ファイルではないため
 
 ## 移植手順
 
 1. 対象リポジトリに上記ファイルを配置する
-2. 既存の AI 関連ドキュメント（`AGENTS.md` / `CLAUDE.md` / `AI.md` / `.ai/*.md`）がある場合は、上書きせず差分比較して統合する
+2. 既存の AI 関連ドキュメント（`AGENTS.md` / `CLAUDE.md` / `.ai/*.md`）がある場合は、上書きせず差分比較して統合する
 3. 衝突したルールは採用方針（採用 / 不採用 / 保留）を明記する
 4. `.ai/project.md` をプロジェクト内容に合わせて更新する
 5. `.ai/rules.md` に言語・フレームワーク固有ルールを追加する
 6. `.ai/workflow.md` のコマンド例を実運用に合わせて更新する
-7. Claude Code を使う場合は `.claude/commands/` を配置し、`/pick` / `/p` / `/review-verify [issue-number]` / `/rv [issue-number]` と `/commit` / `/c` / `/commit!` / `/c!` を有効化する
+7. Claude Code を使う場合は `.claude/commands/` を配置し、`/pick` / `/p` / `/deploy-to-production` / `/dtp` / `/deploy-to-staging` / `/dts` / `/commit` / `/c` / `/commit!` / `/c!` を有効化する
 8. Codex を使う場合は Slash Command が使えないため、同等処理をプロンプトで指示する運用を明記する
-9. 必要に応じて `.context/issue_scope.json` を使う運用（`/pick` / `/p` 任意・未設定時は通常動作）を明記する
+9. 必要に応じて `.context/current_issue` を使う運用（`/pick` / `/p` 任意・未設定時は通常動作）を明記する
 10. 既存のタスク管理資料（`docs/TODO.md` など）がある場合は、GitHub Issues運用に移行する
 11. 旧タスク管理資料への参照が残っていないことを確認する（`README.md` / `docs/` / `AGENTS.md` など）
 12. 移行完了した旧タスク管理資料（`docs/TODO.md` など）を削除する
