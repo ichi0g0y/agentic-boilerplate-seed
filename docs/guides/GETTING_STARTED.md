@@ -19,7 +19,7 @@
 - 画面・API・データのラフ設計
 - タスク分解（GitHub Issues）
 - 優先度ラベル定義（`priority:P0` / `P1` / `P2` / `P3`）
-- 必要なら `/pick` / `/p` を使ったIssueスコープ共有（`.context/issue_scope.json`）を準備する
+- 必要なら `/pick` / `/p` を使ったIssue共有（`.context/current_issue`）を準備する
 - Issue単位でworktreeを分ける運用準備
 - 小さなPRを順次適用する前提で作業を分割
 

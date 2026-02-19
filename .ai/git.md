@@ -1,9 +1,11 @@
 # Gitコミットルール
 
-## コミット制限
+## 🚨 絶対厳守: コミット制限
 
 - `/commit` / `/c` または `/commit!` / `/c!` の明示がない限り、コミットしない
 - 曖昧な承認（OK、進めて等）ではコミットしない
+- ユーザー明示指示がない `git commit --amend` は実行しない
+- コミットに Claude 共著フッターを追加しない
 
 ## メッセージ形式
 
@@ -36,8 +38,8 @@
 - 1Issue 1PRを基本とする
 - 1PRの変更は小さく保ち、段階的に適用する
 - PRのbaseブランチは `develop` とする
-- PR本文には対象Issue（`#<issue-number>`）への参照を記載する
-- `Closes` / `Refs` の判定対象は `primary_issue + active_related_issues + related_issues` とする
-- `Closes` は `primary_issue` と、`active_related_issues` が `ready_for_close` / `closed` のIssueを記載する
-- `Refs` は `active_related_issues` が `reserved` / `in_progress` のIssue、および候補のみ（`related_issues` のみ）のIssueを記載する
-- 複数Issueを同一PRで扱う場合、上記判定に沿って `Closes #...` / `Refs #...` を複数併記してよい
+- PR本文には対象Issueへの参照を記載する
+- `Closes` は `.context/current_issue`（または依頼文で確定したIssue番号）を記載する
+- `Refs` は関連するIssueを記載する
+- `develop -> main` 反映時は `/deploy-to-production` / `/dtp` 相当を使う
+- `develop -> staging` 反映時は `/deploy-to-staging` / `/dts` 相当を使う
