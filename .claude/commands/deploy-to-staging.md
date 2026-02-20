@@ -32,4 +32,3 @@ argument-hint: "[--no-merge] [release-label]"
 - 必須チェック未通過ならマージしない。
 - 既存のOpenな `develop -> staging` PRがある場合は、それを優先して使う。
 - コンフリクトがある場合は自動解消しない。`develop` 側で解消してから同一PRを更新する。
-- `origin/staging` が存在しない場合はPR作成を中断し、ブランチ作成方針を確認する。
