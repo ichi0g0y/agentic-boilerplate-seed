@@ -32,7 +32,7 @@
 - 進捗はIssue本文のチェックリストで管理する
 - Issue分割は優先度・担当・期限・リリース単位が異なる場合に限定する
 - 分割した親子Issueは `Refs #...` で相互参照する
-- `/pick` 相当の指示やIssue番号の明示がない依頼は、planモードでOpen Issue候補を優先度順に提示し、採用Issueをユーザー確認する
+- `/pick` 相当の指示やIssue番号の明示がなく、`current_issue` も未確定の依頼は、planモードでOpen Issue候補を優先度順に提示し、採用Issueをユーザー確認する
 - 適切な既存Issueがない場合は、その旨をユーザーへ報告し、以降はユーザー指示に従う
 
 ## Issueスコープ管理
@@ -41,8 +41,8 @@
 - セッション開始時に `.context/current_issue` があれば、対象Issueとして復元する
 - 会話コンテキストと `.context/current_issue` が不一致の場合は、ユーザー最新の明示指示を優先し、明示がない場合は `.context/current_issue` を正とする
 - 計画相談・壁打ちは `current_issue` 未設定でも進めてよい
-- Issue番号が未指定のときは、planモードでOpen Issueを優先度順（`P0 -> P1 -> P2 -> P3 -> 優先度なし`）に複数件取得して候補化する
-- 候補の中から採用Issueをユーザーに選択してもらい、選ばれたIssueを `current_issue` として確定する
+- Issue番号が未指定かつ `current_issue` 未確定のときは、planモードでOpen Issueを優先度順（`P0 -> P1 -> P2 -> P3 -> 優先度なし`）に複数件取得して候補化する
+- 候補が1件ならそのIssueを `current_issue` として確定し、複数件ならユーザーに選択してもらい、選ばれたIssueを `current_issue` として確定する
 - 適切な候補がない場合は、候補0件であることをユーザーへ報告し、`current_issue` は未確定のままにする
 - 既存Issueを継続する場合は `/pick` / `/p` またはIssue番号明示で対象を切り替える
 - `current_issue` 確定時は `.context/current_issue` にIssue番号を1行で書き出す
@@ -55,7 +55,7 @@
 ### 0. 受付ゲート
 
 1. ユーザー指示の目的・完了条件・期待する成果物を確認する
-2. `/pick` 相当の指示やIssue番号の明示がない場合は、planモードでOpen Issue候補の提示とスコープ確認を先に行う
+2. `/pick` 相当の指示やIssue番号の明示がなく、`current_issue` も未確定の場合は、planモードでOpen Issue候補の提示とスコープ確認を先に行う
 3. そのターンでレビュー作成側か指摘対応側かを決め、進め方を明示する
 
 ### 1. 計画

@@ -17,7 +17,7 @@
 
 ## Claude Code 固有の補足
 
-- `/pick` 相当の指示やIssue番号の明示がない依頼は、planモードでIssue定義の作成とスコープ確認を行う
+- `/pick` 相当の指示やIssue番号の明示がなく、`current_issue` も未確定の依頼は、planモードでIssue定義の作成とスコープ確認を行う
 - 対象Issue確定時は `.context/current_issue` にIssue番号を1行で書き出す
 - セッション開始時に `.context/current_issue` があれば対象Issueとして復元する
 - 対象PRがマージされ、Issue完了が確認できたら `.context/current_issue` を削除する
