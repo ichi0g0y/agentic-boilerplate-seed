@@ -46,7 +46,7 @@
 - 適切な候補がない場合は、候補0件であることをユーザーへ報告し、`current_issue` は未確定のままにする
 - 既存Issueを継続する場合は `/pick` / `/p` またはIssue番号明示で対象を切り替える
 - `current_issue` 確定時は `.context/current_issue` にIssue番号を1行で書き出す
-- `.context/current_issue` を再設定する場合は上書き前にユーザー確認を行う
+- `.context/current_issue` を再設定する場合は、ユーザー最新指示でIssue番号が明示されているときを除き、上書き前にユーザー確認を行う
 - 共有ライブラリ変更を含む場合は、影響先Issueと `Refs #...` で相互に記載する
 - 対象PRがマージされ、Issue完了が確認できたら `.context/current_issue` を削除する
 
