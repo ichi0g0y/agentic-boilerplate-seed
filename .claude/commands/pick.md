@@ -15,7 +15,9 @@ argument-hint: "[issue-number]"
 
 1. 引数（Issue番号）の有無を確認する。
 2. 引数がある場合:
-   - `gh issue view <issue-number>` でIssueの存在を確認する。
+   - Issueの存在を確認する（手段は固定しない。例: `gh issue view <issue-number>` / GitHub REST API / GraphQL API）。
+   - 最初に選んだ手段が使えない場合は、別手段に切り替えて確認する。
+   - 存在確認に失敗した場合は `.context/current_issue` を更新せずに中断し、その旨をユーザーへ報告する。
    - 既存の `.context/current_issue` があっても、ユーザー明示指示として引数のIssue番号で上書き保存する。
 3. 引数がない場合:
    - 既存の `.context/current_issue` の有無を確認する。
