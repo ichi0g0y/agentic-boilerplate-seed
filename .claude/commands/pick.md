@@ -9,7 +9,7 @@ argument-hint: "[issue-number]"
 
 ## 目的
 
-対象Issueを `.context/current_issue` に保存し、作業対象を明示する。
+対象Issueを `.context/current_issue` に保存し、既存Issue継続時の作業対象を明示する。
 
 ## 実行手順
 

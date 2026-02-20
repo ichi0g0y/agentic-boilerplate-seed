@@ -32,19 +32,20 @@
 - 進捗はIssue本文のチェックリストで管理する
 - Issue分割は優先度・担当・期限・リリース単位が異なる場合に限定する
 - 分割した親子Issueは `Refs #...` で相互参照する
-- `/pick` 相当の指示やIssue番号の明示がない依頼は、まず planモードでIssue定義の作成とスコープ確認を行う
+- `/pick` 相当の指示やIssue番号の明示がない依頼は、planモードでOpen Issue候補を優先度順に提示し、採用Issueをユーザー確認する
+- 適切な既存Issueがない場合は、planモードでIssue定義を作成して新規Issueを起票する
 
 ## Issueスコープ管理
 
 - `current_issue` は会話コンテキストと `.context/current_issue` の二重管理で扱う
 - セッション開始時に `.context/current_issue` があれば、対象Issueとして復元する
 - 計画相談・壁打ちは `current_issue` 未設定でも進めてよい
-- Issue番号が未指定のときは、次の順に推論する
-  1. `.context/current_issue`
-  2. `.context/notes.md` / `.context/todos.md` / `.context/plans/` のメモ
-  3. 現在のブランチ名に含まれるIssue番号
-- 推論で確定できない場合は、Issue設計とスコープ確認を行ってから実装に入る
+- Issue番号が未指定のときは、planモードでOpen Issueを優先度順（`P0 -> P1 -> P2 -> P3 -> 優先度なし`）に複数件取得して候補化する
+- 候補の中から採用Issueをユーザーに選択してもらい、選ばれたIssueを `current_issue` として確定する
+- 適切な候補がない場合は、planモードでIssue定義を作成し、新規Issueを起票して `current_issue` を確定する
+- 既存Issueを継続する場合は `/pick` / `/p` またはIssue番号明示で対象を切り替える
 - `current_issue` 確定時は `.context/current_issue` にIssue番号を1行で書き出す
+- `.context/current_issue` を再設定する場合は上書き前にユーザー確認を行う
 - 共有ライブラリ変更を含む場合は、影響先Issueと `Refs #...` で相互に記載する
 - 対象PRがマージされ、Issue完了が確認できたら `.context/current_issue` を削除する
 
@@ -53,7 +54,7 @@
 ### 0. 受付ゲート
 
 1. ユーザー指示の目的・完了条件・期待する成果物を確認する
-2. `/pick` 相当の指示やIssue番号の明示がない場合は、Issue設計とスコープ確認を先に行う
+2. `/pick` 相当の指示やIssue番号の明示がない場合は、planモードでOpen Issue候補の提示とスコープ確認を先に行う
 3. そのターンでレビュー作成側か指摘対応側かを決め、進め方を明示する
 
 ### 1. 計画
@@ -61,13 +62,13 @@
 1. ユーザー指示を分解し、同一目的・同一完了条件の作業を原則1つのIssueに集約する
 2. Issue定義の作成として、目的・手順・受け入れ条件・チェックリストを整理する
 3. 分割が必要な場合は、優先度・担当・期限・リリース単位の差異を根拠に分割する
-4. この段階ではIssue作成はまだ行わず、スコープの合意まで進める
+4. スコープ合意後は、同一エージェントがIssue確定（既存Issue選択または新規Issue起票）から実装まで継続して進める
 
 ### 2. スコープ固定（任意）
 
 1. 対象Issue番号を確定し、会話コンテキストの `current_issue` と同期する
 2. `current_issue` 確定時は `.context/current_issue` にIssue番号を1行で保存する
-3. 未確定時は推論手順で候補を整理し、確定できない場合はユーザー確認で決定する
+3. 未確定時はOpen Issue候補の提示または新規Issue起票のどちらで確定するかをユーザー確認で決定する
 
 ### 3. 実装
 
