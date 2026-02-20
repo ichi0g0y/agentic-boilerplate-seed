@@ -15,6 +15,7 @@ argument-hint: "[--no-merge] [release-label]"
 
 1. `.ai/workflow.md` と `.ai/git.md` のPR運用ルールを確認する。
 2. `origin/staging` と `origin/develop` を最新化し、両ブランチが存在することを確認する。
+   - `origin/staging` が存在しない場合はPR作成を中断し、ブランチ作成方針を確認する。
 3. `base=staging` / `head=develop` のOpen PRが既にあるか確認する。
 4. Open PRがない場合は `develop -> staging` のPRを作成する。
    - タイトル例: `staging: develop を staging へ反映 (<YYYY-MM-DD>)`
