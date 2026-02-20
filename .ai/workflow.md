@@ -39,6 +39,7 @@
 
 - `current_issue` は会話コンテキストと `.context/current_issue` の二重管理で扱う
 - セッション開始時に `.context/current_issue` があれば、対象Issueとして復元する
+- 会話コンテキストと `.context/current_issue` が不一致の場合は、ユーザー最新の明示指示を優先し、明示がない場合は `.context/current_issue` を正とする
 - 計画相談・壁打ちは `current_issue` 未設定でも進めてよい
 - Issue番号が未指定のときは、planモードでOpen Issueを優先度順（`P0 -> P1 -> P2 -> P3 -> 優先度なし`）に複数件取得して候補化する
 - 候補の中から採用Issueをユーザーに選択してもらい、選ばれたIssueを `current_issue` として確定する
