@@ -26,8 +26,9 @@ ConductorでCodex/Claudeに依頼するときの、人間向けテンプレー�
   - テスト手順
   - 影響範囲
   - チェックリスト
-- `Closes` には `.context/current_issue`（または明示Issue番号）を記載してください。
-- `Refs` には関連Issueのみを記載してください。
+- `Closes` は作業対象のサブIssue番号を記載してください（親Issueではなくサブ）。
+- `Refs` は親Issueや関連Issueを記載してください。
+- PRマージ後、親Issueの全サブIssueがClose済みなら親Issueもクローズしてください。
 - 実行した確認コマンドと結果を本文に明記してください。
 - 未実施の検証がある場合は「未実施項目」と理由を明記してください。
 - 最終報告には、作成/更新したPRのURL（`pr_url`）を必ず記載してください。
