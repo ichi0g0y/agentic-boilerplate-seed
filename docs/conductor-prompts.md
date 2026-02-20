@@ -26,7 +26,7 @@ ConductorでCodex/Claudeに依頼するときの、人間向けテンプレー�
   - テスト手順
   - 影響範囲
   - チェックリスト
-- `Closes` は作業対象のサブIssue番号を記載してください（親Issueではなくサブ）。
+- `Closes` は作業対象のIssue番号を記載してください（親Issue + サブIssue構成の場合はサブIssue番号を使う）。
 - `Refs` は親Issueや関連Issueを記載してください。
 - PRマージ後、親Issueの全サブIssueがClose済みなら親Issueもクローズしてください。
 - 実行した確認コマンドと結果を本文に明記してください。

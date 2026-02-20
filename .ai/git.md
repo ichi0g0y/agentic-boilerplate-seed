@@ -58,6 +58,6 @@
 - 1PRの変更は小さく保ち、段階的に適用する
 - PRのbaseブランチは `develop` とする
 - PR本文には対象Issueへの参照を記載する
-- `Closes` は作業対象のサブIssue番号を記載する（親Issueではなくサブ）
+- `Closes` は作業対象のIssue番号を記載する（親Issue + サブIssue構成の場合はサブIssue番号を使う）
 - `Refs` は親Issueや関連Issueを記載し、共有ライブラリ変更時は相互Issueを明示する
 - `develop` から環境ブランチへの反映は `.claude/commands/deploy-to-production.md` / `.claude/commands/deploy-to-staging.md` に従う

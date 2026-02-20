@@ -93,7 +93,7 @@
 ### 5. PRと完了
 
 1. PR本文には対象Issueを記載する
-2. `Closes` は作業対象のサブIssue番号を記載する（親Issueではなくサブ）
+2. `Closes` は作業対象のIssue番号を記載する（親Issue + サブIssue構成の場合はサブIssue番号を使う）
 3. `Refs` は親Issueや関連Issueを記載し、共有ライブラリ変更時は相互Issueを明示する
 4. PRマージ後にIssueが自動クローズされない場合は、マージPRを参照して手動クローズする
 5. PRマージ後、親Issueの全サブIssueがClose済みかを `subIssuesSummary` で確認し、全完了なら親Issueもクローズする
